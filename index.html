@@ -225,25 +225,35 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center pt-24 pb-12 px-6 relative">
-        <div class="max-w-5xl mx-auto text-center z-10 w-full">
-            
-            <!-- 3D Labyrinth Hero Visual -->
-            <div class="reveal w-full h-[250px] md:h-[350px] mb-10 relative overflow-hidden" style="mask-image: linear-gradient(to bottom, black 60%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);">
-                <div id="labyrinth-canvas" class="w-full h-full" data-cam-x="14" data-cam-y="20" data-cam-z="14"></div>
-            </div>
+    <section class="min-h-screen flex items-start justify-start pt-32 md:pt-48 pb-12 px-6 md:px-12 relative overflow-hidden">
+        
+        <!-- Full-bleed 3D Labyrinth Hero Visual -->
+        <div id="labyrinth-canvas" class="absolute inset-0 w-full h-full z-0 pointer-events-none" data-cam-x="14" data-cam-y="20" data-cam-z="14"></div>
 
-            <h1 class="reveal reveal-delay-1 text-5xl md:text-7xl font-extrabold mb-8 leading-tight tracking-tight">
-                Preparing <span class="text-brand">EQUI</span> for the Next Phase of Success.
-            </h1>
-            <p class="reveal reveal-delay-2 text-xl md:text-2xl text-slate-400 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
-                Full Disruption Readiness Assessment &middot; Algorithmic Biases Identification &middot; AI Capability Development
-            </p>
-            <div class="reveal reveal-delay-3 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="#context" class="px-8 py-4 rounded-full bg-brand text-white font-bold text-lg hover:shadow-[0_0_50px_-5px_rgba(255,42,95,0.8)] hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto">
-                    Explore Proposal
-                </a>
+        <!-- Subtle Gradient Overlay for Text Readability -->
+        <div class="absolute inset-0 w-full md:w-2/3 bg-gradient-to-r from-black/90 via-black/40 to-transparent z-0 pointer-events-none"></div>
+
+        <!-- Main Content overlaid directly on canvas -->
+        <div class="max-w-7xl mx-auto w-full z-10 pointer-events-none relative">
+            <div class="max-w-2xl text-left pointer-events-auto">
+                <h1 class="reveal text-4xl md:text-6xl font-extrabold mb-6 leading-tight tracking-tight drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]">
+                    Preparing <span class="text-brand">EQUI</span> for the Next Phase of Success.
+                </h1>
+                <p class="reveal reveal-delay-1 text-lg md:text-xl text-slate-200 mb-10 font-medium leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+                    Full Disruption Readiness Assessment &middot; Algorithmic Biases Identification &middot; AI Capability Development
+                </p>
+                <div class="reveal reveal-delay-2 flex flex-col sm:flex-row items-start justify-start gap-4">
+                    <a href="#context" class="px-8 py-4 rounded-full bg-brand text-white font-bold text-lg hover:shadow-[0_0_50px_-5px_rgba(255,42,95,0.8)] hover:-translate-y-1 transition-all duration-300 text-center inline-block">
+                        Explore Proposal
+                    </a>
+                </div>
             </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce z-10 pointer-events-none">
+            <span class="text-xs uppercase tracking-widest drop-shadow-md">Scroll</span>
+            <svg class="w-4 h-4 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
         </div>
     </section>
 
@@ -343,7 +353,12 @@
                 <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full timeline-line z-0"></div>
 
                 <!-- Step 1 -->
-                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between mb-24 reveal timeline-step">
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between mb-40 reveal timeline-step">
+                    <!-- Background Canvas Container (Right Side Full Bleed) -->
+                    <div class="hidden md:block absolute top-1/2 -translate-y-1/2 left-[calc(50%+4rem)] w-[50vw] h-[800px] -z-10 pointer-events-auto">
+                        <div id="pyramid-canvas-phase1" class="w-full h-full" data-cam-x="20" data-cam-y="22" data-cam-z="20"></div>
+                    </div>
+
                     <div class="md:w-5/12 order-2 md:order-1 glow-card glass p-8 rounded-3xl mt-8 md:mt-0 text-right cursor-pointer group hover:border-brand/50 transition-colors" onclick="toggleTimelineCard(this)">
                         <div class="text-brand font-bold mb-2 uppercase tracking-wide text-sm">Phase 01 &middot; The Core Foundation</div>
                         <h3 class="text-3xl font-bold mb-4">Assessing Disruption Readiness</h3>
@@ -377,20 +392,17 @@
                             <div class="absolute inset-0 rounded-full border border-brand animate-ping opacity-50"></div>
                         </div>
                     </div>
-                    <div class="md:w-5/12 order-3 pointer-events-none hidden md:block px-2">
-                        <div class="w-full h-[450px] overflow-hidden relative flex items-center justify-center" style="mask-image: radial-gradient(circle at center, black 60%, transparent 100%); -webkit-mask-image: radial-gradient(circle at center, black 60%, transparent 100%);">
-                            <div id="pyramid-canvas-phase1" class="w-full h-full" data-cam-x="24" data-cam-y="26" data-cam-z="24"></div>
-                        </div>
-                    </div>
+                    <div class="md:w-5/12 order-3 hidden md:block"></div>
                 </div>
 
                 <!-- Step 2 -->
-                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between mb-24 reveal timeline-step">
-                    <div class="md:w-5/12 order-1 hidden md:block px-2">
-                        <div class="w-full h-[450px] overflow-hidden relative pointer-events-auto flex items-center justify-center" style="mask-image: radial-gradient(circle at center, black 60%, transparent 100%); -webkit-mask-image: radial-gradient(circle at center, black 60%, transparent 100%);">
-                            <div id="nodes-canvas-phase2" class="w-full h-full cursor-grab active:cursor-grabbing" data-cam-x="24" data-cam-y="26" data-cam-z="24"></div>
-                        </div>
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between mb-40 reveal timeline-step">
+                    <!-- Background Canvas Container (Left Side Full Bleed) -->
+                    <div class="hidden md:block absolute top-1/2 -translate-y-1/2 right-[calc(50%+4rem)] w-[50vw] h-[800px] -z-10 pointer-events-auto">
+                        <div id="nodes-canvas-phase2" class="w-full h-full cursor-grab active:cursor-grabbing" data-cam-x="20" data-cam-y="22" data-cam-z="20"></div>
                     </div>
+
+                    <div class="md:w-5/12 order-1 hidden md:block"></div>
                     <div class="md:w-2/12 order-2 flex justify-center pointer-events-none">
                         <div class="w-20 h-20 rounded-full bg-dark-900 border-4 border-brand flex items-center justify-center text-3xl font-bold text-white shadow-[0_0_50px_rgba(255,42,95,0.6)]">
                             2
@@ -445,6 +457,11 @@
 
                 <!-- Step 3 -->
                 <div class="relative z-10 flex flex-col md:flex-row items-center justify-between reveal timeline-step">
+                    <!-- Background Canvas Container (Right Side Full Bleed) -->
+                    <div class="hidden md:block absolute top-1/2 -translate-y-1/2 left-[calc(50%+4rem)] w-[50vw] h-[800px] -z-10 pointer-events-auto">
+                        <div id="stairs-canvas-phase3" class="w-full h-full cursor-grab active:cursor-grabbing" data-cam-x="20" data-cam-y="22" data-cam-z="20"></div>
+                    </div>
+
                     <div class="md:w-5/12 order-2 md:order-1 glow-card glass p-8 rounded-3xl mt-8 md:mt-0 text-right cursor-pointer group hover:border-brand/50 transition-colors" onclick="toggleTimelineCard(this)">
                         <div class="text-brand font-bold mb-2 uppercase tracking-wide text-sm">Phase 03 &middot; The Apex of Engagement</div>
                         <h3 class="text-3xl font-bold mb-4">Integrating AI Capabilities</h3>
@@ -478,11 +495,7 @@
                             3
                         </div>
                     </div>
-                    <div class="md:w-5/12 order-3 hidden md:block px-2">
-                        <div class="w-full h-[450px] overflow-hidden relative pointer-events-auto flex items-center justify-center" style="mask-image: radial-gradient(circle at center, black 60%, transparent 100%); -webkit-mask-image: radial-gradient(circle at center, black 60%, transparent 100%);">
-                            <div id="stairs-canvas-phase3" class="w-full h-full cursor-grab active:cursor-grabbing" data-cam-x="24" data-cam-y="26" data-cam-z="24"></div>
-                        </div>
-                    </div>
+                    <div class="md:w-5/12 order-3 hidden md:block"></div>
                 </div>
 
             </div>
@@ -793,9 +806,7 @@
             scene.fog = new THREE.FogExp2(0x000000, 0.012);
 
             const camera = new THREE.PerspectiveCamera(25, container.clientWidth / container.clientHeight, 1, 1000);
-            camera.position.set(camX, camY, camZ); 
-            camera.lookAt(0, 0, 0);
-
+            
             const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -803,15 +814,12 @@
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             container.appendChild(renderer.domElement);
 
-            // Interactive Controls
-            const controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.05;
-            controls.maxPolarAngle = Math.PI / 2 - 0.05; 
-            controls.minDistance = 10;
-            controls.maxDistance = 100;
-            controls.enableZoom = false; // Prevent scroll hijacking
-            controls.target.set(0, -2, 0);
+            // Shift the camera target left so the labyrinth sits on the right of the screen
+            const isMobile = window.innerWidth < 768;
+            const shiftX = isMobile ? 0 : -5;
+            
+            camera.position.set(camX + shiftX, camY, camZ); 
+            camera.lookAt(shiftX, -2, 0);
 
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
             scene.add(ambientLight);
@@ -950,6 +958,11 @@
                 camera.aspect = container.clientWidth / container.clientHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(container.clientWidth, container.clientHeight);
+                
+                const isMobileResize = window.innerWidth < 768;
+                const newShiftX = isMobileResize ? 0 : -5;
+                camera.position.set(camX + newShiftX, camY, camZ);
+                camera.lookAt(newShiftX, -2, 0);
             });
 
             function animate() {
@@ -959,7 +972,6 @@
                 if (rect.bottom < 0 || rect.top > window.innerHeight) return;
 
                 const time = clock.getElapsedTime();
-                controls.update();
 
                 heroSpotlight.position.x = Math.sin(time * 0.5) * 14;
                 heroSpotlight.position.y = 20 + Math.sin(time * 0.8) * 2;
@@ -1098,9 +1110,9 @@
             const container = document.getElementById(containerId);
             if (!container) return;
 
-            const camX = parseFloat(container.getAttribute('data-cam-x')) || 24;
-            const camY = parseFloat(container.getAttribute('data-cam-y')) || 26;
-            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 24;
+            const camX = parseFloat(container.getAttribute('data-cam-x')) || 20;
+            const camY = parseFloat(container.getAttribute('data-cam-y')) || 22;
+            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 20;
 
             const scene = new THREE.Scene();
             scene.fog = new THREE.FogExp2(0x000000, 0.015);
@@ -1283,9 +1295,9 @@
             const container = document.getElementById(containerId);
             if (!container) return;
 
-            const camX = parseFloat(container.getAttribute('data-cam-x')) || 24;
-            const camY = parseFloat(container.getAttribute('data-cam-y')) || 26;
-            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 24;
+            const camX = parseFloat(container.getAttribute('data-cam-x')) || 20;
+            const camY = parseFloat(container.getAttribute('data-cam-y')) || 22;
+            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 20;
 
             const scene = new THREE.Scene();
             scene.fog = new THREE.FogExp2(0x000000, 0.015);
@@ -1522,9 +1534,9 @@
             const container = document.getElementById(containerId);
             if (!container) return;
 
-            const camX = parseFloat(container.getAttribute('data-cam-x')) || 24;
-            const camY = parseFloat(container.getAttribute('data-cam-y')) || 26;
-            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 24;
+            const camX = parseFloat(container.getAttribute('data-cam-x')) || 20;
+            const camY = parseFloat(container.getAttribute('data-cam-y')) || 22;
+            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 20;
 
             const scene = new THREE.Scene();
             scene.fog = new THREE.FogExp2(0x000000, 0.015);
