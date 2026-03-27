@@ -209,7 +209,7 @@
 
     <!-- Navigation -->
     <nav class="fixed w-full z-50 glass border-b-0 border-white/5 transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="w-full px-6 md:px-12 lg:px-16 py-4 flex justify-between items-center">
             <div class="text-2xl font-extrabold tracking-tight flex items-center gap-2">
                 <img src="https://raw.githubusercontent.com/karolina-afk/AO-brand-assets-/main/Axia_Origin_W_RGB_72dpii%20(4).png" alt="Axia Origin" class="h-6 md:h-8 object-contain">
             </div>
@@ -225,7 +225,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="min-h-screen flex items-start justify-start pt-32 md:pt-48 pb-12 px-6 md:px-12 relative overflow-hidden">
+    <section class="min-h-screen flex items-start justify-start pt-32 md:pt-48 pb-12 px-6 md:px-12 lg:px-16 relative overflow-hidden">
         
         <!-- Full-bleed 3D Labyrinth Hero Visual -->
         <div id="labyrinth-canvas" class="absolute inset-0 w-full h-full z-0 pointer-events-none" data-cam-x="14" data-cam-y="20" data-cam-z="14"></div>
@@ -234,7 +234,7 @@
         <div class="absolute inset-0 w-full md:w-2/3 bg-gradient-to-r from-black/90 via-black/40 to-transparent z-0 pointer-events-none"></div>
 
         <!-- Main Content overlaid directly on canvas -->
-        <div class="max-w-7xl mx-auto w-full z-10 pointer-events-none relative">
+        <div class="w-full z-10 pointer-events-none relative">
             <div class="max-w-2xl text-left pointer-events-auto">
                 <h1 class="reveal text-4xl md:text-6xl font-extrabold mb-6 leading-tight tracking-tight drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]">
                     Preparing <span class="text-brand">EQUI</span> for the Next Phase of Success.
@@ -355,8 +355,8 @@
                 <!-- Step 1 -->
                 <div class="relative z-10 flex flex-col md:flex-row items-center justify-between mb-40 reveal timeline-step">
                     <!-- Background Canvas Container (Right Side Full Bleed) -->
-                    <div class="hidden md:block absolute top-1/2 -translate-y-1/2 left-[calc(50%+4rem)] w-[50vw] h-[800px] -z-10 pointer-events-auto">
-                        <div id="pyramid-canvas-phase1" class="w-full h-full" data-cam-x="20" data-cam-y="22" data-cam-z="20"></div>
+                    <div class="hidden md:block absolute top-1/2 -translate-y-1/2 left-[calc(50%+4rem)] w-[50vw] h-[800px] -z-10 pointer-events-none">
+                        <div id="pyramid-canvas-phase1" class="w-full h-full pointer-events-none" data-cam-x="34" data-cam-y="36" data-cam-z="34"></div>
                     </div>
 
                     <div class="md:w-5/12 order-2 md:order-1 glow-card glass p-8 rounded-3xl mt-8 md:mt-0 text-right cursor-pointer group hover:border-brand/50 transition-colors" onclick="toggleTimelineCard(this)">
@@ -392,14 +392,18 @@
                             <div class="absolute inset-0 rounded-full border border-brand animate-ping opacity-50"></div>
                         </div>
                     </div>
-                    <div class="md:w-5/12 order-3 hidden md:block"></div>
+                    <div class="md:w-5/12 order-3 hidden md:block px-2">
+                        <div class="w-full h-[450px] overflow-hidden relative pointer-events-auto flex items-center justify-center" style="mask-image: radial-gradient(circle at center, black 60%, transparent 100%); -webkit-mask-image: radial-gradient(circle at center, black 60%, transparent 100%);">
+                            <div id="pyramid-canvas-phase1" class="w-full h-full cursor-grab active:cursor-grabbing" data-cam-x="28" data-cam-y="30" data-cam-z="28"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Step 2 -->
                 <div class="relative z-10 flex flex-col md:flex-row items-center justify-between mb-40 reveal timeline-step">
                     <!-- Background Canvas Container (Left Side Full Bleed) -->
-                    <div class="hidden md:block absolute top-1/2 -translate-y-1/2 right-[calc(50%+4rem)] w-[50vw] h-[800px] -z-10 pointer-events-auto">
-                        <div id="nodes-canvas-phase2" class="w-full h-full cursor-grab active:cursor-grabbing" data-cam-x="20" data-cam-y="22" data-cam-z="20"></div>
+                    <div class="hidden md:block absolute top-1/2 -translate-y-1/2 right-[calc(50%+4rem)] w-[50vw] h-[800px] -z-10 pointer-events-none">
+                        <div id="nodes-canvas-phase2" class="w-full h-full pointer-events-none" data-cam-x="28" data-cam-y="30" data-cam-z="28"></div>
                     </div>
 
                     <div class="md:w-5/12 order-1 hidden md:block"></div>
@@ -458,8 +462,8 @@
                 <!-- Step 3 -->
                 <div class="relative z-10 flex flex-col md:flex-row items-center justify-between reveal timeline-step">
                     <!-- Background Canvas Container (Right Side Full Bleed) -->
-                    <div class="hidden md:block absolute top-1/2 -translate-y-1/2 left-[calc(50%+4rem)] w-[50vw] h-[800px] -z-10 pointer-events-auto">
-                        <div id="stairs-canvas-phase3" class="w-full h-full cursor-grab active:cursor-grabbing" data-cam-x="20" data-cam-y="22" data-cam-z="20"></div>
+                    <div class="hidden md:block absolute top-1/2 -translate-y-1/2 left-[calc(50%+4rem)] w-[50vw] h-[800px] -z-10 pointer-events-none">
+                        <div id="stairs-canvas-phase3" class="w-full h-full pointer-events-none" data-cam-x="34" data-cam-y="36" data-cam-z="34"></div>
                     </div>
 
                     <div class="md:w-5/12 order-2 md:order-1 glow-card glass p-8 rounded-3xl mt-8 md:mt-0 text-right cursor-pointer group hover:border-brand/50 transition-colors" onclick="toggleTimelineCard(this)">
@@ -1110,16 +1114,16 @@
             const container = document.getElementById(containerId);
             if (!container) return;
 
-            const camX = parseFloat(container.getAttribute('data-cam-x')) || 20;
-            const camY = parseFloat(container.getAttribute('data-cam-y')) || 22;
-            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 20;
+            const camX = parseFloat(container.getAttribute('data-cam-x')) || 34;
+            const camY = parseFloat(container.getAttribute('data-cam-y')) || 36;
+            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 34;
 
             const scene = new THREE.Scene();
             scene.fog = new THREE.FogExp2(0x000000, 0.015);
 
             const camera = new THREE.PerspectiveCamera(25, container.clientWidth / container.clientHeight, 1, 1000);
             camera.position.set(camX, camY, camZ);
-            camera.lookAt(0, 0, 0);
+            camera.lookAt(0, -2, 0);
 
             const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
             renderer.setSize(container.clientWidth, container.clientHeight);
@@ -1148,6 +1152,7 @@
             
             const cubes = [];
             const gridGroup = new THREE.Group();
+            gridGroup.position.set(0, -3.5, 0);
             scene.add(gridGroup);
             const geometry = new THREE.RoundedBoxGeometry(cubeSize, cubeSize, cubeSize, 3, 0.03);
             
@@ -1217,6 +1222,7 @@
                 camera.aspect = container.clientWidth / container.clientHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(container.clientWidth, container.clientHeight);
+                camera.lookAt(0, -2, 0);
             });
 
             function animate() {
@@ -1295,16 +1301,16 @@
             const container = document.getElementById(containerId);
             if (!container) return;
 
-            const camX = parseFloat(container.getAttribute('data-cam-x')) || 20;
-            const camY = parseFloat(container.getAttribute('data-cam-y')) || 22;
-            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 20;
+            const camX = parseFloat(container.getAttribute('data-cam-x')) || 28;
+            const camY = parseFloat(container.getAttribute('data-cam-y')) || 30;
+            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 28;
 
             const scene = new THREE.Scene();
             scene.fog = new THREE.FogExp2(0x000000, 0.015);
 
             const camera = new THREE.PerspectiveCamera(25, container.clientWidth / container.clientHeight, 1, 1000);
             camera.position.set(camX, camY, camZ);
-            camera.lookAt(0, 0, 0);
+            camera.lookAt(0, -2, 0);
 
             const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
             renderer.setSize(container.clientWidth, container.clientHeight);
@@ -1312,15 +1318,6 @@
             renderer.shadowMap.enabled = true;
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             container.appendChild(renderer.domElement);
-
-            const controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.05;
-            controls.maxPolarAngle = Math.PI / 2 - 0.05;
-            controls.minDistance = 15;
-            controls.maxDistance = 80;
-            controls.enableZoom = false; 
-            controls.target.set(0, -2, 0);
 
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
             scene.add(ambientLight);
@@ -1434,6 +1431,7 @@
                 camera.aspect = container.clientWidth / container.clientHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(container.clientWidth, container.clientHeight);
+                camera.lookAt(0, -2, 0);
             });
 
             function animate() {
@@ -1443,7 +1441,6 @@
                 if (rect.bottom < 0 || rect.top > window.innerHeight) return;
 
                 const time = clock.getElapsedTime();
-                controls.update();
 
                 heroSpotlight.position.x = Math.sin(time * 0.5) * 14;
                 heroSpotlight.position.z = Math.cos(time * 0.3) * 14;
@@ -1534,16 +1531,16 @@
             const container = document.getElementById(containerId);
             if (!container) return;
 
-            const camX = parseFloat(container.getAttribute('data-cam-x')) || 20;
-            const camY = parseFloat(container.getAttribute('data-cam-y')) || 22;
-            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 20;
+            const camX = parseFloat(container.getAttribute('data-cam-x')) || 34;
+            const camY = parseFloat(container.getAttribute('data-cam-y')) || 36;
+            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 34;
 
             const scene = new THREE.Scene();
             scene.fog = new THREE.FogExp2(0x000000, 0.015);
 
             const camera = new THREE.PerspectiveCamera(25, container.clientWidth / container.clientHeight, 1, 1000);
             camera.position.set(camX, camY, camZ);
-            camera.lookAt(0, 0, 0);
+            camera.lookAt(0, -2, 0);
 
             const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
             renderer.setSize(container.clientWidth, container.clientHeight);
@@ -1551,15 +1548,6 @@
             renderer.shadowMap.enabled = true;
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             container.appendChild(renderer.domElement);
-
-            const controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.05;
-            controls.maxPolarAngle = Math.PI / 2 - 0.05; 
-            controls.minDistance = 15;
-            controls.maxDistance = 80;
-            controls.enableZoom = false; 
-            controls.target.set(0, -2, 0);
 
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
             scene.add(ambientLight);
@@ -1661,6 +1649,7 @@
                 camera.aspect = container.clientWidth / container.clientHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(container.clientWidth, container.clientHeight);
+                camera.lookAt(0, -2, 0);
             });
 
             function animate() {
@@ -1671,7 +1660,6 @@
 
                 const delta = clamp(clock.getDelta(), 0, 0.1); 
                 const time = clock.getElapsedTime();
-                controls.update();
 
                 heroSpotlight.position.x = Math.sin(time * 0.5) * 14;
                 heroSpotlight.position.y = 20 + Math.sin(time * 0.8) * 2;
