@@ -1,3971 +1,1780 @@
-Gemini
-Enhance Consulting Proposal Website
-WORK
-Conversation with Gemini
-You said
-Help me continue work on this website
-
-
-
 <!DOCTYPE html>
-
 <html lang="en" class="scroll-smooth">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="description" content="EQUI Consulting Proposal prepared by Axia Origin. Preparing EQUI for the Next Phase of Success.">
+    <meta name="theme-color" content="#000000">
+    
     <title>EQUI Consulting Proposal | Axia Origin</title>
-
     
-
     <!-- Tailwind CSS -->
-
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
     
-
     <!-- Three.js Dependencies for Visuals -->
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/RoundedBoxGeometry.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
-
-
+    <!-- Tailwind Configuration -->
     <script>
-
         tailwind.config = {
-
             theme: {
-
                 extend: {
-
                     fontFamily: {
-
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-
                     },
-
                     colors: {
-
                         brand: {
-
                             DEFAULT: '#ff2a5f',
-
                             light: '#ff5c85',
-
                             dark: '#cc1e48'
-
                         },
-
                         dark: {
-
-                            900: '#070b14',
-
-                            800: '#0d1323',
-
-                            700: '#162032',
-
+                            900: '#000000',
+                            800: '#050505',
+                            700: '#111111',
                         }
-
                     },
-
                     animation: {
-
                         'gradient-x': 'gradient-x 15s ease infinite',
-
                         'float': 'float 6s ease-in-out infinite',
-
                     },
-
                     keyframes: {
-
                         'gradient-x': {
-
                             '0%, 100%': {
-
                                 'background-size': '200% 200%',
-
                                 'background-position': 'left center'
-
                             },
-
                             '50%': {
-
                                 'background-size': '200% 200%',
-
                                 'background-position': 'right center'
-
                             },
-
                         },
-
                         'float': {
-
                             '0%, 100%': { transform: 'translateY(0)' },
-
                             '50%': { transform: 'translateY(-20px)' },
-
                         }
-
                     }
-
                 }
-
             }
-
         }
-
     </script>
 
+    <!-- Custom CSS -->
     <style>
-
         body {
-
-            background-color: #070b14;
-
+            background-color: #000000;
             color: #f8fafc;
-
             overflow-x: hidden;
-
         }
 
-
+        /* Preloader */
+        #preloader {
+            transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+        }
 
         /* Scrollbar */
-
         ::-webkit-scrollbar {
-
             width: 10px;
-
         }
-
         ::-webkit-scrollbar-track {
-
-            background: #070b14;
-
+            background: #000000;
         }
-
         ::-webkit-scrollbar-thumb {
-
-            background: #162032;
-
+            background: #111111;
             border-radius: 5px;
-
         }
-
         ::-webkit-scrollbar-thumb:hover {
-
             background: #ff2a5f;
-
         }
-
-
 
         /* Glassmorphism */
-
         .glass {
-
-            background: rgba(22, 32, 50, 0.4);
-
+            background: rgba(10, 10, 10, 0.4);
             backdrop-filter: blur(12px);
-
             -webkit-backdrop-filter: blur(12px);
-
             border: 1px solid rgba(255, 255, 255, 0.05);
-
         }
-
-
 
         /* Scroll Reveal Utility Classes */
-
         .reveal {
-
             opacity: 0;
-
             transform: translateY(40px);
-
             transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-
         }
-
         .reveal.active {
-
             opacity: 1;
-
             transform: translateY(0);
-
         }
-
         .reveal-delay-1 { transition-delay: 150ms; }
-
         .reveal-delay-2 { transition-delay: 300ms; }
-
         .reveal-delay-3 { transition-delay: 450ms; }
 
-
-
         /* Mouse Tracking Glow Effect for Cards */
-
         .glow-card {
-
             position: relative;
-
         }
-
         .glow-card::before {
-
             content: "";
-
             position: absolute;
-
             top: 0; left: 0; right: 0; bottom: 0;
-
             border-radius: inherit;
-
             padding: 2px;
-
             background: radial-gradient(
-
                 800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-
                 rgba(255, 42, 95, 0.4),
-
                 transparent 40%
-
             );
-
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-
             -webkit-mask-composite: xor;
-
             mask-composite: exclude;
-
             z-index: -1;
-
             transition: background 0.3s ease;
-
         }
-
-
 
         /* Flip Card CSS */
-
         .flip-card {
-
             perspective: 1500px;
-
         }
-
         .flip-card-inner {
-
             position: relative;
-
             width: 100%;
-
             height: 100%;
-
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-
             transform-style: preserve-3d;
-
         }
-
         .flip-card:hover .flip-card-inner {
-
             transform: rotateY(180deg);
-
         }
-
         .flip-card-front, .flip-card-back {
-
             position: absolute;
-
             width: 100%;
-
             height: 100%;
-
             -webkit-backface-visibility: hidden;
-
             backface-visibility: hidden;
-
         }
-
         .flip-card-back {
-
             transform: rotateY(180deg);
-
         }
-
-
 
         /* Timeline Styles */
-
         .timeline-line {
-
             width: 2px;
-
             background: linear-gradient(to bottom, transparent, #ff2a5f, transparent);
-
         }
-
-
+        .timeline-step {
+            transition: opacity 0.7s ease, filter 0.7s ease, transform 0.7s ease;
+        }
+        .timeline-step.inactive {
+            opacity: 0.25;
+            filter: grayscale(100%);
+            transform: scale(0.98);
+        }
 
         /* Expandable Card CSS */
-
         .card-details {
-
             max-height: 0;
-
             opacity: 0;
-
             overflow: hidden;
-
             transition: max-height 0.6s ease-in-out, opacity 0.5s ease-in-out, padding 0.5s ease;
-
         }
-
         .card-details.open {
-
             max-height: 1200px; 
-
             opacity: 1;
-
             padding-top: 1.5rem;
-
         }
-
         .chevron-icon {
-
             transition: transform 0.3s ease;
-
         }
-
         .chevron-icon.open {
-
             transform: rotate(180deg);
-
         }
-
     </style>
-
 </head>
-
 <body class="antialiased relative">
 
-
-
-    <!-- Ambient Background Blobs -->
-
-    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-
-        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-brand/20 blur-[120px] mix-blend-screen animate-float"></div>
-
-        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-blue-900/20 blur-[120px] mix-blend-screen animate-float" style="animation-delay: 2s;"></div>
-
+    <!-- Preloader -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-dark-900 flex flex-col items-center justify-center">
+        <div class="w-16 h-16 rounded-full border-4 border-white/10 border-t-brand animate-spin mb-6"></div>
+        <div class="text-brand font-bold tracking-[0.2em] uppercase text-sm animate-pulse">Initializing Proposal</div>
     </div>
 
-
+    <!-- Ambient Background Blobs -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-brand/20 blur-[120px] mix-blend-screen animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-blue-900/20 blur-[120px] mix-blend-screen animate-float" style="animation-delay: 2s;"></div>
+    </div>
 
     <!-- Navigation -->
-
     <nav class="fixed w-full z-50 glass border-b-0 border-white/5 transition-all duration-300" id="navbar">
-
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-
             <div class="text-2xl font-extrabold tracking-tight flex items-center gap-2">
-
-                <span class="text-white">Axia</span><span class="text-brand">Origin</span>
-
+                <img src="https://raw.githubusercontent.com/karolina-afk/AO-brand-assets-/main/Axia_Origin_W_RGB_72dpii%20(4).png" alt="Axia Origin" class="h-6 md:h-8 object-contain">
             </div>
-
             <div class="hidden md:flex gap-8 text-sm font-medium text-slate-300">
-
                 <a href="#approach" class="hover:text-brand transition-colors">The Approach</a>
-
                 <a href="#commercials" class="hover:text-brand transition-colors">Commercials</a>
-
                 <a href="#vision" class="hover:text-brand transition-colors">The Axia Way</a>
-
             </div>
-
             <a href="#next-steps" class="px-5 py-2 rounded-full bg-white/10 hover:bg-brand hover:text-white transition-all text-sm font-semibold backdrop-blur-md">
-
                 Next Steps
-
             </a>
-
         </div>
-
     </nav>
 
-
-
     <!-- Hero Section -->
-
     <section class="min-h-screen flex items-center justify-center pt-24 pb-12 px-6 relative">
-
         <div class="max-w-5xl mx-auto text-center z-10 w-full">
-
             
-
             <!-- 3D Labyrinth Hero Visual -->
-
             <div class="reveal w-full h-[250px] md:h-[350px] mb-10 relative overflow-hidden" style="mask-image: linear-gradient(to bottom, black 60%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);">
-
-                <div id="labyrinth-canvas" class="w-full h-full" data-cam-x="20" data-cam-y="25" data-cam-z="20"></div>
-
+                <div id="labyrinth-canvas" class="w-full h-full" data-cam-x="14" data-cam-y="20" data-cam-z="14"></div>
             </div>
-
-
 
             <h1 class="reveal reveal-delay-1 text-5xl md:text-7xl font-extrabold mb-8 leading-tight tracking-tight">
-
                 Preparing <span class="text-brand">EQUI</span> for the Next Phase of Success.
-
             </h1>
-
             <p class="reveal reveal-delay-2 text-xl md:text-2xl text-slate-400 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
-
                 Full Disruption Readiness Assessment &middot; Algorithmic Biases Identification &middot; AI Capability Development
-
             </p>
-
             <div class="reveal reveal-delay-3 flex flex-col sm:flex-row items-center justify-center gap-4">
-
-                <a href="#context" class="px-8 py-4 rounded-full bg-brand text-white font-bold text-lg hover:shadow-[0_0_30px_-5px_#ff2a5f] hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto">
-
+                <a href="#context" class="px-8 py-4 rounded-full bg-brand text-white font-bold text-lg hover:shadow-[0_0_50px_-5px_rgba(255,42,95,0.8)] hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto">
                     Explore Proposal
-
                 </a>
-
             </div>
-
         </div>
-
-        
-
-        <!-- Scroll Indicator -->
-
-        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce">
-
-            <span class="text-xs uppercase tracking-widest">Scroll</span>
-
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-
-        </div>
-
     </section>
 
-
-
-    <!-- Equi's Mission & Context Section (New Flip Cards) -->
-
+    <!-- Equi's Mission & Context Section -->
     <section id="context" class="py-24 px-6 relative z-10 border-b border-white/5 bg-dark-900/30">
-
         <div class="max-w-6xl mx-auto">
-
-            <div class="reveal mb-16">
-
+            <div class="reveal mb-16 text-center flex flex-col items-center">
                 <span class="text-brand font-bold tracking-wider uppercase text-sm mb-4 block">Strategic Alignment</span>
-
-                <h2 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight tracking-tight">
-
+                <h2 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight tracking-tight max-w-5xl mx-auto">
                     Equi’s mission resonates with <span class="text-brand">Axia’s soul</span>, and we believe Equi is exactly the kind of organisation we exist to serve.
-
                 </h2>
-
-                <p class="text-xl text-slate-400 max-w-4xl leading-relaxed">
-
+                <p class="text-xl text-slate-400 max-w-4xl mx-auto leading-relaxed">
                     We are a committed team of people who care deeply about the work we do and the people we do it with. We are drawn to leaders who are trying to make the world a more prosperous place for all. We understand that Equi has reached the end of its launch phase and there is much to think about for the next phase of success.
-
                 </p>
-
             </div>
-
-
 
             <!-- Flip Cards Mapping Opportunities to Outcomes -->
-
             <div class="grid md:grid-cols-2 gap-8 h-80">
-
                 
-
                 <!-- Flip Card 1: Algorithmic Bias -->
-
                 <div class="flip-card reveal reveal-delay-1 h-full cursor-pointer">
-
                     <div class="flip-card-inner shadow-xl">
-
-                        <!-- Front (Immediate Opportunity) -->
-
+                        <!-- Front -->
                         <div class="flip-card-front glass p-8 md:p-12 rounded-[2rem] border border-brand/30 flex flex-col justify-center items-center text-center bg-dark-800/80">
-
                             <div class="flex items-center gap-2 text-brand text-xs font-bold tracking-widest uppercase mb-6">
-
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
-
                                 Immediate Opportunity
-
                             </div>
-
                             <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">1. Algorithmic Bias</h3>
-
                             <p class="text-slate-300">An immediate opportunity relates to algorithmic bias on social media platforms.</p>
-
                             <div class="absolute bottom-6 flex items-center justify-center w-full opacity-60">
-
                                 <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center animate-bounce">
-
                                     <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-
                                 </div>
-
                             </div>
-
                         </div>
-
-                        <!-- Back (Outcome Needed) -->
-
-                        <div class="flip-card-back glass p-8 md:p-12 rounded-[2rem] border border-brand bg-dark-900 flex flex-col justify-center items-center text-center shadow-[0_0_40px_rgba(255,42,95,0.15)]">
-
+                        <!-- Back -->
+                        <div class="flip-card-back glass p-8 md:p-12 rounded-[2rem] border border-brand bg-dark-900 flex flex-col justify-center items-center text-center shadow-[0_0_60px_rgba(255,42,95,0.35)]">
                             <div class="flex items-center gap-2 text-brand text-xs font-bold tracking-widest uppercase mb-6">
-
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-
                                 Outcomes You Need
-
                             </div>
-
                             <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">External Positioning</h3>
-
                             <p class="text-slate-300">Substantive discussions with senior stakeholders about algorithmic biases.</p>
-
                         </div>
-
                     </div>
-
                 </div>
-
-
 
                 <!-- Flip Card 2: AI in Core Work -->
-
                 <div class="flip-card reveal reveal-delay-2 h-full cursor-pointer">
-
                     <div class="flip-card-inner shadow-xl">
-
-                        <!-- Front (Immediate Opportunity) -->
-
+                        <!-- Front -->
                         <div class="flip-card-front glass p-8 md:p-12 rounded-[2rem] border border-brand/30 flex flex-col justify-center items-center text-center bg-dark-800/80">
-
                             <div class="flex items-center gap-2 text-brand text-xs font-bold tracking-widest uppercase mb-6">
-
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
-
                                 Immediate Opportunity
-
                             </div>
-
                             <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">2. AI in Core Work</h3>
-
                             <p class="text-slate-300">Your research team produces high-quality outputs, and you sense that AI could drive new ways of working.</p>
-
                             <div class="absolute bottom-6 flex items-center justify-center w-full opacity-60">
-
                                 <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center animate-bounce">
-
                                     <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-
                                 </div>
-
                             </div>
-
                         </div>
-
-                        <!-- Back (Outcome Needed) -->
-
-                        <div class="flip-card-back glass p-8 md:p-12 rounded-[2rem] border border-brand bg-dark-900 flex flex-col justify-center items-center text-center shadow-[0_0_40px_rgba(255,42,95,0.15)]">
-
+                        <!-- Back -->
+                        <div class="flip-card-back glass p-8 md:p-12 rounded-[2rem] border border-brand bg-dark-900 flex flex-col justify-center items-center text-center shadow-[0_0_60px_rgba(255,42,95,0.35)]">
                             <div class="flex items-center gap-2 text-brand text-xs font-bold tracking-widest uppercase mb-6">
-
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-
                                 Outcomes You Need
-
                             </div>
-
                             <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">Internal Readiness</h3>
-
                             <p class="text-slate-300">Managing the impact of AI in Equi's core operations efficiently and securely.</p>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
             
-
             <p class="text-center text-slate-500 text-xs mt-8 reveal reveal-delay-3">Hover over cards to flip and view required outcomes</p>
-
         </div>
-
     </section>
 
-
-
-    <!-- The Approach (Integrated Project) -->
-
+    <!-- The Approach -->
     <section id="approach" class="py-32 px-6 relative overflow-hidden">
-
         <div class="max-w-7xl mx-auto">
-
             <div class="mb-24 text-center reveal">
-
                 <span class="text-brand font-bold tracking-wider uppercase text-sm">Immediate Opportunities</span>
-
                 <h2 class="text-4xl md:text-6xl font-extrabold mt-4 mb-6">A Single, <span class="text-brand">Integrated</span> Project</h2>
-
                 <p class="text-xl text-slate-400 max-w-3xl mx-auto">
-
                     We believe your immediate opportunities are separate expressions of the same underlying need: to become an organisation that is disruption-ready.
-
                 </p>
-
             </div>
-
-
 
             <!-- Interactive Timeline -->
-
             <div class="relative max-w-5xl mx-auto">
-
                 <!-- Center Line for Desktop -->
-
                 <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full timeline-line z-0"></div>
 
-
-
                 <!-- Step 1 -->
-
-                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between mb-24 reveal">
-
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between mb-24 reveal timeline-step">
                     <div class="md:w-5/12 order-2 md:order-1 glow-card glass p-8 rounded-3xl mt-8 md:mt-0 text-right cursor-pointer group hover:border-brand/50 transition-colors" onclick="toggleTimelineCard(this)">
-
                         <div class="text-brand font-bold mb-2 uppercase tracking-wide text-sm">Phase 01 &middot; The Core Foundation</div>
-
                         <h3 class="text-3xl font-bold mb-4">Assessing Disruption Readiness</h3>
-
                         <p class="text-slate-400 text-sm leading-relaxed">
-
                             Evaluating internal capabilities and unlocking leadership instincts to confidently navigate upcoming technological shifts.
-
                         </p>
-
                         
-
-                        <!-- Read More Indication -->
-
                         <div class="mt-6 flex items-center justify-end gap-2 text-brand text-sm font-semibold group-hover:text-pink-400 transition-colors">
-
                             <span>Read Full Context</span>
-
                             <svg class="w-4 h-4 chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-
                         </div>
-
-
-
-                        <!-- Expanded Details -->
 
                         <div class="card-details text-left border-t border-white/10">
-
                             <div class="space-y-4 text-slate-300 text-sm">
-
                                 <p><strong class="text-white">Why This Matters:</strong> Technology-enabled disruption is already established in the context of Equi's work, and in the months and years ahead, innovation with synthetic media and shifts in how trust is attributed online will create new pressures that no organisation can fully, accurately anticipate.</p>
-
                                 <p>The organisations that will navigate multiple and simultaneous disruptions effectively will be ready to transform, shift direction and adapt across the full spectrum of operations - led by leaders who make conscious decisions using structured approaches to interpret new trends and threats.</p>
-
                                 <div class="bg-dark-900/50 p-4 rounded-xl border border-white/5 mt-4">
-
                                     <div class="font-semibold text-white mb-2 flex items-center gap-2">
-
                                         <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-
                                         Approach
-
                                     </div>
-
                                     <p class="mb-2">We will begin with a structured Disruption Readiness Workshop, open to you and any senior members of your team you wish to include. The workshop serves two purposes: 1) to unlock your curiosity, instincts and conscious thinking; 2) enable a disruption readiness diagnostic assessment calibrated to what Equi is trying to do and the environment it operates in.</p>
-
                                     <p>Through the workshop, we will introduce our Disruption Readiness Model and conduct an initial assessment. By the close, you will have a shared view of where Equi stands, a clear sense of how to start addressing priority topics, and the strategic framing needed to address the rest of the project with confidence.</p>
-
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
-
                     <div class="md:w-2/12 order-1 md:order-2 flex justify-center pointer-events-none">
-
-                        <div class="w-20 h-20 rounded-full bg-dark-900 border-4 border-brand flex items-center justify-center text-3xl font-bold text-white shadow-[0_0_30px_rgba(255,42,95,0.4)] relative">
-
+                        <div class="w-20 h-20 rounded-full bg-dark-900 border-4 border-brand flex items-center justify-center text-3xl font-bold text-white shadow-[0_0_50px_rgba(255,42,95,0.6)] relative">
                             1
-
-                            <!-- Pulse effect -->
-
                             <div class="absolute inset-0 rounded-full border border-brand animate-ping opacity-50"></div>
-
                         </div>
-
                     </div>
-
-                    <!-- Pure Pyramid Visual (No Nodes/Lines) -->
-
-                    <div class="md:w-5/12 order-3 pointer-events-none hidden md:block pl-6">
-
-                        <div class="w-full h-[350px] overflow-hidden relative" style="mask-image: radial-gradient(circle at center, black 40%, transparent 100%); -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);">
-
-                            <div id="pyramid-canvas-phase1" class="w-full h-full" data-cam-x="25" data-cam-y="30" data-cam-z="25"></div>
-
+                    <div class="md:w-5/12 order-3 pointer-events-none hidden md:block px-2">
+                        <div class="w-full h-[450px] overflow-hidden relative flex items-center justify-center" style="mask-image: radial-gradient(circle at center, black 60%, transparent 100%); -webkit-mask-image: radial-gradient(circle at center, black 60%, transparent 100%);">
+                            <div id="pyramid-canvas-phase1" class="w-full h-full" data-cam-x="24" data-cam-y="26" data-cam-z="24"></div>
                         </div>
-
                     </div>
-
                 </div>
-
-
 
                 <!-- Step 2 -->
-
-                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between mb-24 reveal">
-
-                    <!-- Algorithmic Bias Nodes Visual -->
-
-                    <div class="md:w-5/12 order-1 hidden md:block pr-6">
-
-                        <div class="w-full h-[350px] overflow-hidden relative pointer-events-auto" style="mask-image: radial-gradient(circle at center, black 40%, transparent 100%); -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);">
-
-                            <div id="nodes-canvas-phase2" class="w-full h-full cursor-grab active:cursor-grabbing" data-cam-x="35" data-cam-y="25" data-cam-z="35"></div>
-
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between mb-24 reveal timeline-step">
+                    <div class="md:w-5/12 order-1 hidden md:block px-2">
+                        <div class="w-full h-[450px] overflow-hidden relative pointer-events-auto flex items-center justify-center" style="mask-image: radial-gradient(circle at center, black 60%, transparent 100%); -webkit-mask-image: radial-gradient(circle at center, black 60%, transparent 100%);">
+                            <div id="nodes-canvas-phase2" class="w-full h-full cursor-grab active:cursor-grabbing" data-cam-x="24" data-cam-y="26" data-cam-z="24"></div>
                         </div>
-
                     </div>
-
                     <div class="md:w-2/12 order-2 flex justify-center pointer-events-none">
-
-                        <div class="w-20 h-20 rounded-full bg-dark-900 border-4 border-brand flex items-center justify-center text-3xl font-bold text-white shadow-[0_0_30px_rgba(255,42,95,0.4)]">
-
+                        <div class="w-20 h-20 rounded-full bg-dark-900 border-4 border-brand flex items-center justify-center text-3xl font-bold text-white shadow-[0_0_50px_rgba(255,42,95,0.6)]">
                             2
-
                         </div>
-
                     </div>
-
                     <div class="md:w-5/12 order-3 glow-card glass p-8 rounded-3xl mt-8 md:mt-0 cursor-pointer group hover:border-brand/50 transition-colors" onclick="toggleTimelineCard(this)">
-
                         <div class="text-brand font-bold mb-2 uppercase tracking-wide text-sm">Phase 02 &middot; The Primary Application</div>
-
                         <h3 class="text-3xl font-bold mb-4">Investigating Algorithmic Biases</h3>
-
                         <p class="text-slate-400 text-sm leading-relaxed">
-
                             Establishing a credible, robust, and evidence-based methodology to analyse and respond to social media content patterns.
-
                         </p>
-
                         
-
-                        <!-- Read More Indication -->
-
                         <div class="mt-6 flex items-center gap-2 text-brand text-sm font-semibold group-hover:text-pink-400 transition-colors">
-
                             <span>Read Full Context</span>
-
                             <svg class="w-4 h-4 chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-
                         </div>
-
-
-
-                        <!-- Expanded Details -->
 
                         <div class="card-details text-left border-t border-white/10">
-
                             <div class="space-y-4 text-slate-300 text-sm">
-
                                 <p><strong class="text-white">Why This Matters:</strong> Algorithmic bias on social media platforms — particularly the disproportionate reach of right-wing and anti-Muslim content — is a live and pressing issue that Equi has been invited to address. Doing so with credibility requires a clear, structured, repeatable and well-governed methodology that helps establish Equi's preferred position in key discussions.</p>
-
                                 
-
                                 <div class="bg-dark-900/50 p-4 rounded-xl border border-white/5 mt-4">
-
                                     <div class="font-semibold text-white mb-2 flex items-center gap-2">
-
                                         <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-
                                         Approach &amp; Method
-
                                     </div>
-
                                     <p class="mb-2">Investigating bias within social media algorithms starts with the simple-sounding but difficult task of defining specific questions that require structured answers to give the evidence base needed.</p>
-
                                     <p>This requires precision, governance and a clear understanding of what is possible - which we will manage using a method called the <strong>'Value Pyramid'</strong>. Completing this step provides the structure for the clear, defensible approach that will be adopted to investigate algorithmic bias. The evidence base that follows needs to withstand the highest levels of scrutiny.</p>
-
                                 </div>
-
-
 
                                 <div class="pt-2">
-
                                     <p class="font-semibold text-white mb-3">Understanding the Sources of Bias: Three Distinct Factors.</p>
-
                                     <ul class="space-y-3">
-
                                         <li class="pl-4 border-l-2 border-brand/50">
-
                                             <strong class="text-brand block">1. Inauthentic Coordinated Behaviour</strong>
-
                                             Organised networks deliberately amplifying content — bots, coordinated inauthentic accounts, manipulation campaigns.
-
                                         </li>
-
                                         <li class="pl-4 border-l-2 border-brand/50">
-
                                             <strong class="text-brand block">2. Bias Patterns</strong>
-
                                             Platform architecture that structurally favours certain content types, emotional registers, or ideological framings.
-
                                         </li>
-
                                         <li class="pl-4 border-l-2 border-brand/50">
-
                                             <strong class="text-brand block">3. Content Engagement Patterns</strong>
-
                                             Legitimate user behaviour where certain content generates more interaction and is therefore surfaced more widely.
-
                                         </li>
-
                                     </ul>
-
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
-
 
                 <!-- Step 3 -->
-
-                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between reveal">
-
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between reveal timeline-step">
                     <div class="md:w-5/12 order-2 md:order-1 glow-card glass p-8 rounded-3xl mt-8 md:mt-0 text-right cursor-pointer group hover:border-brand/50 transition-colors" onclick="toggleTimelineCard(this)">
-
                         <div class="text-brand font-bold mb-2 uppercase tracking-wide text-sm">Phase 03 &middot; The Apex of Engagement</div>
-
                         <h3 class="text-3xl font-bold mb-4">Integrating AI Capabilities</h3>
-
                         <p class="text-slate-400 text-sm leading-relaxed">
-
                             Transferring critical technical skills and embedding AI workflows directly into Equi's core operating model.
-
                         </p>
-
                         
-
-                        <!-- Read More Indication -->
-
                         <div class="mt-6 flex items-center justify-end gap-2 text-brand text-sm font-semibold group-hover:text-pink-400 transition-colors">
-
                             <span>Read Full Context</span>
-
                             <svg class="w-4 h-4 chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-
                         </div>
-
-
-
-                        <!-- Expanded Details -->
 
                         <div class="card-details text-left border-t border-white/10">
-
                             <div class="space-y-4 text-slate-300 text-sm">
-
                                 <p><strong class="text-white">Why This Matters:</strong> Equi produces research that is careful, considered and impactful. The people who write it care deeply about the credibility of their work which serves as the foundation of Equi, its reputation and the experience of collaborating on key topics.</p>
-
                                 <p>The cultural moment we're in that Equi's research could shape is evolving quickly. AI best practices (also evolving quickly) could modify how fast and how widely Equi can contribute - potentially making it possible to produce research in a fraction of the time currently required.</p>
-
                                 <p>Skills transfer is embedded throughout the project, ensuring the capability stays with Equi and continues to develop after the engagement concludes. We will not produce the final report of the assignment by prompting an AI tool, but we will transparently compare and contrast the differences in real time with you in the meeting that concludes the work.</p>
-
                                 
-
                                 <div class="bg-dark-900/50 p-4 rounded-xl border border-white/5 mt-4">
-
                                     <div class="font-semibold text-white mb-2 flex items-center gap-2">
-
                                         <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-
                                         Approach
-
                                     </div>
-
                                     <p>We will help Equi understand the external landscape for AI best practices for knowledge workers and corresponding internal mechanisms required. Specifically, what tools exist, how to evaluate and govern them, where the risks lie and how to manage them. We will map the research workflow end to end, identify entry points for AI, and help your team adopt AI with ownership and control - all while evidencing the tangible benefits by performing research using these tools for the algorithmic bias workstream.</p>
-
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
-
                     <div class="md:w-2/12 order-1 md:order-2 flex justify-center pointer-events-none">
-
-                        <div class="w-20 h-20 rounded-full bg-dark-900 border-4 border-brand flex items-center justify-center text-3xl font-bold text-white shadow-[0_0_30px_rgba(255,42,95,0.4)]">
-
+                        <div class="w-20 h-20 rounded-full bg-dark-900 border-4 border-brand flex items-center justify-center text-3xl font-bold text-white shadow-[0_0_50px_rgba(255,42,95,0.6)]">
                             3
-
                         </div>
-
                     </div>
-
-                    <!-- AI Capability Stairs Visual -->
-
-                    <div class="md:w-5/12 order-3 hidden md:block pl-6">
-
-                        <div class="w-full h-[350px] overflow-hidden relative pointer-events-auto" style="mask-image: radial-gradient(circle at center, black 40%, transparent 100%); -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);">
-
-                            <div id="stairs-canvas-phase3" class="w-full h-full cursor-grab active:cursor-grabbing" data-cam-x="40" data-cam-y="30" data-cam-z="40"></div>
-
+                    <div class="md:w-5/12 order-3 hidden md:block px-2">
+                        <div class="w-full h-[450px] overflow-hidden relative pointer-events-auto flex items-center justify-center" style="mask-image: radial-gradient(circle at center, black 60%, transparent 100%); -webkit-mask-image: radial-gradient(circle at center, black 60%, transparent 100%);">
+                            <div id="stairs-canvas-phase3" class="w-full h-full cursor-grab active:cursor-grabbing" data-cam-x="24" data-cam-y="26" data-cam-z="24"></div>
                         </div>
-
                     </div>
-
                 </div>
 
-
-
             </div>
-
         </div>
-
     </section>
-
-
 
     <!-- Commercials Section -->
-
     <section id="commercials" class="py-32 px-6 bg-dark-800/80 border-y border-white/5">
-
         <div class="max-w-7xl mx-auto">
-
             <div class="text-center mb-20 reveal">
-
                 <h2 class="text-4xl md:text-5xl font-extrabold mb-6">Transparent <span class="text-brand">Commercials</span></h2>
-
                 <p class="text-xl text-slate-400">You'll get quality outputs, delivered quickly, and priced fairly. That's a commitment we take seriously.</p>
-
             </div>
-
-
 
             <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-
                 
-
                 <!-- Option 2 (Left side - Basic) -->
-
                 <div class="glow-card glass p-10 rounded-[2rem] border border-white/10 flex flex-col reveal transition-transform hover:-translate-y-2">
-
                     <div class="text-slate-400 font-semibold tracking-wider text-sm mb-2">OPTION 2</div>
-
                     <h3 class="text-2xl font-bold text-white mb-2">Algorithmic Bias Report</h3>
-
                     <div class="flex items-baseline gap-2 mb-8">
-
                         <span class="text-5xl font-extrabold text-white">£35K</span>
-
                         <span class="text-slate-400 font-medium">+ VAT</span>
-
                     </div>
-
                     
-
                     <div class="flex-grow">
-
                         <p class="text-sm text-brand font-semibold mb-4 uppercase tracking-widest">What's Included</p>
-
                         <ul class="space-y-4">
-
                             <li class="flex items-start gap-3 text-slate-300">
-
                                 <svg class="w-6 h-6 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-
                                 <span>Full analysis and Algorithmic Bias Report</span>
-
                             </li>
-
                         </ul>
-
                     </div>
-
-                    
-
-                    <button class="mt-8 w-full py-4 rounded-xl border border-white/20 text-white font-semibold hover:bg-white/5 transition-colors">
-
-                        Select Option 2
-
-                    </button>
-
                 </div>
-
-
 
                 <!-- Option 1 (Right side - Recommended) -->
-
-                <div class="glow-card bg-gradient-to-br from-dark-700 to-dark-900 p-10 rounded-[2rem] border border-brand/50 relative flex flex-col reveal reveal-delay-1 shadow-[0_0_50px_rgba(255,42,95,0.15)] transform md:-translate-y-4 hover:-translate-y-6 transition-transform">
-
-                    <!-- Ribbon -->
-
+                <div class="glow-card bg-gradient-to-br from-dark-700 to-dark-900 p-10 rounded-[2rem] border border-brand/50 relative flex flex-col reveal reveal-delay-1 shadow-[0_0_80px_rgba(255,42,95,0.4)] transform md:-translate-y-4 hover:-translate-y-6 transition-transform">
                     <div class="absolute top-0 right-8 transform -translate-y-1/2">
-
                         <div class="bg-brand text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
-
                             Recommended
-
                         </div>
-
                     </div>
-
-
 
                     <div class="text-brand font-semibold tracking-wider text-sm mb-2">OPTION 1</div>
-
                     <h3 class="text-2xl font-bold text-white mb-2">Full Transformation</h3>
-
                     <div class="flex items-baseline gap-2 mb-8">
-
                         <span class="text-5xl font-extrabold text-brand">£70K</span>
-
                         <span class="text-slate-400 font-medium">+ VAT</span>
-
                     </div>
-
                     
-
                     <div class="flex-grow">
-
                         <p class="text-sm text-brand font-semibold mb-4 uppercase tracking-widest">What's Included</p>
-
                         <ul class="space-y-4">
-
                             <li class="flex items-start gap-3 text-slate-200">
-
                                 <svg class="w-6 h-6 text-brand shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-
                                 <span>Disruption readiness assessment</span>
-
                             </li>
-
                             <li class="flex items-start gap-3 text-slate-200">
-
                                 <svg class="w-6 h-6 text-brand shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-
                                 <span>AI capability transfer</span>
-
                             </li>
-
                             <li class="flex items-start gap-3 text-slate-200">
-
                                 <svg class="w-6 h-6 text-brand shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-
                                 <span>Full analysis and Algorithmic Bias Report</span>
-
                             </li>
-
                         </ul>
-
                     </div>
-
-                    
-
-                    <button class="mt-8 w-full py-4 rounded-xl bg-brand text-white font-bold hover:shadow-[0_0_20px_rgba(255,42,95,0.4)] transition-all">
-
-                        Select Full Transformation
-
-                    </button>
-
                 </div>
 
-
-
             </div>
-
         </div>
-
     </section>
 
-
-
-    <!-- Philosophy/Vision Section Moved to become "The Axia Way" -->
-
+    <!-- The Axia Way Section -->
     <section id="vision" class="py-32 px-6 bg-dark-800/50 relative">
-
         <div class="max-w-7xl mx-auto">
-
             <div class="text-center max-w-3xl mx-auto mb-20 reveal">
-
                 <h2 class="text-3xl md:text-5xl font-bold mb-6">Redesigning what <span class="text-brand">good consulting</span> looks and feels like.</h2>
-
             </div>
-
-
 
             <div class="grid md:grid-cols-3 gap-8">
-
                 <!-- Value 1 -->
-
                 <div class="glow-card glass p-8 rounded-3xl reveal flex flex-col h-full hover:-translate-y-2 transition-transform duration-500 group">
-
                     <div class="w-14 h-14 rounded-2xl bg-brand/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-
                         <svg class="w-7 h-7 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
-
                     </div>
-
                     <h3 class="text-2xl font-bold mb-4">Delivery Excellence</h3>
-
                     <blockquote class="italic text-slate-400 border-l-2 border-brand pl-4 mb-4 text-sm leading-relaxed">
-
                         “Every leader in the world who doesn’t know what to do needs to spend time with this team.”
-
                     </blockquote>
-
                     <p class="text-slate-300 text-sm leading-relaxed flex-grow">We are precise in our recommendations, deliberate in our approach and transparent. We treat your problem as our own. When it goes well, the credit is shared; when it doesn't, the accountability is ours.</p>
-
                 </div>
-
-
 
                 <!-- Value 2 -->
-
                 <div class="glow-card glass p-8 rounded-3xl reveal reveal-delay-1 flex flex-col h-full hover:-translate-y-2 transition-transform duration-500 group">
-
                     <div class="w-14 h-14 rounded-2xl bg-brand/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-
                         <svg class="w-7 h-7 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-
                     </div>
-
                     <h3 class="text-2xl font-bold mb-4">People Centricity</h3>
-
                     <blockquote class="italic text-slate-400 border-l-2 border-brand pl-4 mb-4 text-sm leading-relaxed">
-
                         “I’ve never come across a team that behaves like this, with so much care, with such useful feedback.”
-
                     </blockquote>
-
                     <p class="text-slate-300 text-sm leading-relaxed flex-grow">We develop the people around us. Capability transfer is core to how we operate. We never make you feel like an outsider in your own project. We integrate seamlessly with you and your team.</p>
-
                 </div>
-
-
 
                 <!-- Value 3 -->
-
                 <div class="glow-card glass p-8 rounded-3xl reveal reveal-delay-2 flex flex-col h-full hover:-translate-y-2 transition-transform duration-500 group">
-
                     <div class="w-14 h-14 rounded-2xl bg-brand/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-
                         <svg class="w-7 h-7 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-
                     </div>
-
                     <h3 class="text-2xl font-bold mb-4">World Class Outputs</h3>
-
                     <blockquote class="italic text-slate-400 border-l-2 border-brand pl-4 mb-4 text-sm leading-relaxed">
-
                         “That is so useful and beautiful, I think we should frame it and hang it up in the corridor.”
-
                     </blockquote>
-
                     <p class="text-slate-300 text-sm leading-relaxed flex-grow">Everything we produce is shaped to meet your needs – not our preferences. We produce outputs you'll be proud to share and be able to use long after we leave.</p>
-
                 </div>
-
             </div>
-
         </div>
-
     </section>
 
-
-
-    <!-- Next Steps / Footer -->
-
+    <!-- Next Steps / Booking Section -->
     <section id="next-steps" class="py-32 px-6 relative">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl md:text-5xl font-extrabold mb-6">Your <span class="text-brand">Response</span></h2>
+                <p class="text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                    We see all feedback as a gift – and we look forward to receiving yours. We are open to discussing the structure of these commercials to align perfectly with your strategic needs.
+                </p>
+            </div>
 
-        <div class="max-w-4xl mx-auto text-center">
-
-            <h2 class="text-4xl md:text-5xl font-extrabold mb-6 reveal">Your <span class="text-brand">Response</span></h2>
-
-            
-
-            <p class="text-xl text-slate-400 max-w-3xl mx-auto mb-16 reveal reveal-delay-1 leading-relaxed">
-
-                We see all feedback as a gift – and we look forward to receiving yours. We are open to discussing the structure of these commercials to align perfectly with your strategic needs.
-
-            </p>
-
-
-
-            <div class="grid md:grid-cols-2 gap-6 text-left reveal reveal-delay-2">
-
-                <div class="glass p-8 rounded-2xl hover:border-brand/30 transition-colors">
-
+            <div class="grid md:grid-cols-2 gap-8 text-left mb-16">
+                <!-- Info Cards -->
+                <div class="glass p-8 rounded-2xl hover:border-brand/30 transition-colors reveal reveal-delay-1">
                     <div class="w-12 h-12 rounded-full bg-brand/20 flex items-center justify-center mb-6 text-brand">
-
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-
                     </div>
-
                     <h3 class="text-xl font-bold text-white mb-3">A Chemistry Test</h3>
-
                     <p class="text-slate-400 text-sm">We understand that committing to a project is a big decision. We offer a chemistry working session so you can test the experience of working with us before committing to a longer engagement.</p>
-
                 </div>
-
                 
-
-                <div class="glass p-8 rounded-2xl hover:border-brand/30 transition-colors">
-
+                <div class="glass p-8 rounded-2xl hover:border-brand/30 transition-colors reveal reveal-delay-2">
                     <div class="w-12 h-12 rounded-full bg-brand/20 flex items-center justify-center mb-6 text-brand">
-
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-
                     </div>
-
                     <h3 class="text-xl font-bold text-white mb-3">Mobilisation</h3>
-
                     <p class="text-slate-400 text-sm">When you're ready, we're ready. A delivery team mobilised in weeks, not months. We welcome feedback, challenge or questions and work flexibly to adjust scope.</p>
-
                 </div>
-
             </div>
 
+            <div class="reveal reveal-delay-3 flex justify-center">
+                <a href="mailto:hayder@axiaorigin.com?subject=Next Steps: EQUI Consulting Proposal" class="inline-flex py-4 px-10 rounded-xl bg-brand text-white font-bold hover:shadow-[0_0_40px_rgba(255,42,95,0.8)] transition-all items-center gap-3 text-lg">
+                    Request Next Steps
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </a>
+            </div>
 
-
-            <div class="mt-24 pt-12 border-t border-white/5 reveal reveal-delay-3">
-
-                <p class="text-2xl font-bold text-white mb-2">Phew.</p>
-
+            <div class="mt-24 text-center reveal">
+                <p class="text-3xl font-extrabold text-white mb-2">Phew.</p>
                 <p class="text-brand font-medium tracking-wide">Not your conventional management consultancy.</p>
-
-                <div class="mt-8 flex justify-center">
-
-                    <div class="text-2xl font-extrabold tracking-tight flex items-center gap-2 opacity-50">
-
-                        <span class="text-white">Axia</span><span class="text-brand">Origin</span>
-
-                    </div>
-
-                </div>
-
             </div>
-
         </div>
-
     </section>
 
-
+    <!-- Footer -->
+    <footer class="border-t border-white/5 bg-dark-900 pt-16 pb-8 px-6 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-12">
+                <div class="text-2xl font-extrabold tracking-tight flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity cursor-pointer">
+                    <img src="https://raw.githubusercontent.com/karolina-afk/AO-brand-assets-/main/Axia_Origin_W_RGB_72dpii%20(4).png" alt="Axia Origin" class="h-6 md:h-8 object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                </div>
+                <div class="flex gap-8 text-sm font-medium text-slate-500">
+                    <a href="#" class="hover:text-brand transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-brand transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-brand transition-colors">Client Portal</a>
+                </div>
+            </div>
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-600">
+                <p>&copy; 2026 Axia Origin. Confidential Proposal prepared for EQUI Consulting.</p>
+                <p>Designed for impact.</p>
+            </div>
+        </div>
+    </footer>
 
     <!-- UI Interactions Script -->
-
     <script>
+        // --- Preloader Logic ---
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+                setTimeout(() => preloader.remove(), 800);
+            }, 500); // Slight delay ensures fonts and initial canvases are totally ready
+        });
 
         // --- Timeline Card Expansion Logic ---
-
         function toggleTimelineCard(element) {
-
             const details = element.querySelector('.card-details');
-
             const chevron = element.querySelector('.chevron-icon');
-
             const toggleText = element.querySelector('span:nth-of-type(1)'); 
-
             
-
             if (details.classList.contains('open')) {
-
                 details.classList.remove('open');
-
                 chevron.classList.remove('open');
-
                 if(toggleText) toggleText.innerText = "Read Full Context";
-
             } else {
-
                 details.classList.add('open');
-
                 chevron.classList.add('open');
-
                 if(toggleText) toggleText.innerText = "Collapse";
-
             }
-
         }
 
-
-
         document.addEventListener('DOMContentLoaded', () => {
-
             // --- Scroll Reveal Logic ---
-
             const revealElements = document.querySelectorAll('.reveal');
-
             
-
             const revealObserver = new IntersectionObserver((entries, observer) => {
-
                 entries.forEach(entry => {
-
                     if (entry.isIntersecting) {
-
                         entry.target.classList.add('active');
-
                     }
-
                 });
-
             }, {
-
                 root: null,
-
                 threshold: 0.1,
-
                 rootMargin: "0px 0px -50px 0px"
-
             });
-
-
 
             revealElements.forEach(el => revealObserver.observe(el));
 
-
-
             // --- Mouse Tracking Glow Effect ---
-
             const handleMouseMove = e => {
-
                 const target = e.currentTarget;
-
                 const rect = target.getBoundingClientRect();
-
                 const x = e.clientX - rect.left;
-
                 const y = e.clientY - rect.top;
-
                 
-
                 target.style.setProperty('--mouse-x', `${x}px`);
-
                 target.style.setProperty('--mouse-y', `${y}px`);
-
             }
-
-
 
             for(const card of document.querySelectorAll('.glow-card')) {
-
                 card.onmousemove = e => handleMouseMove(e);
-
             }
-
-
 
             // --- Navbar Background on Scroll ---
-
             const navbar = document.getElementById('navbar');
-
             window.addEventListener('scroll', () => {
-
                 if (window.scrollY > 50) {
-
                     navbar.classList.add('bg-dark-900/90', 'shadow-lg');
-
                     navbar.classList.remove('border-transparent');
-
                 } else {
-
                     navbar.classList.remove('bg-dark-900/90', 'shadow-lg');
-
                     navbar.classList.add('border-transparent');
-
                 }
-
             });
 
-            
+            // --- Timeline Focus on Scroll ---
+            const timelineSteps = document.querySelectorAll('.timeline-step');
+            if (timelineSteps.length > 0) {
+                const timelineObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            timelineSteps.forEach(step => {
+                                if (step === entry.target) {
+                                    step.classList.remove('inactive');
+                                } else {
+                                    step.classList.add('inactive');
+                                }
+                            });
+                        }
+                    });
+                }, {
+                    root: null,
+                    threshold: 0.4,
+                    rootMargin: "-15% 0px -15% 0px"
+                });
 
+                timelineSteps.forEach((step, index) => {
+                    if (index !== 0) step.classList.add('inactive'); // First one active initially
+                    timelineObserver.observe(step);
+                });
+            }
+            
             // Trigger initial scroll check
-
             window.dispatchEvent(new Event('scroll'));
-
         });
-
     </script>
 
-
-
-    <!-- Three.js Visual Scenes Script -->
-
+    <!-- 3D Visual Scripts -->
     <script>
-
         // --- Helper clamp function ---
-
         const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
-
-
+        // ==========================================
         // Hero Visual: The Labyrinth with Pink Ball
-
+        // ==========================================
         function createLabyrinthVisual(containerId) {
-
             const container = document.getElementById(containerId);
-
             if (!container) return;
 
-
-
-            const camX = parseFloat(container.getAttribute('data-cam-x')) || 20;
-
-            const camY = parseFloat(container.getAttribute('data-cam-y')) || 25;
-
-            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 20;
-
-
+            const camX = parseFloat(container.getAttribute('data-cam-x')) || 14;
+            const camY = parseFloat(container.getAttribute('data-cam-y')) || 20;
+            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 14;
 
             const scene = new THREE.Scene();
-
-            scene.fog = new THREE.FogExp2(0x000000, 0.015);
-
-
-
-            const camera = new THREE.PerspectiveCamera(25, container.clientWidth / container.clientHeight, 1, 1000);
-
-            camera.position.set(camX, camY, camZ);
-
-            camera.lookAt(0, 0, 0);
-
-
-
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-
-            renderer.setSize(container.clientWidth, container.clientHeight);
-
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-            renderer.shadowMap.enabled = true;
-
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-            container.appendChild(renderer.domElement);
-
-
-
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
-
-            scene.add(ambientLight);
-
-            
-
-            const dirLight = new THREE.DirectionalLight(0xffffff, 0.6); 
-
-            dirLight.position.set(30, 60, -10);
-
-            dirLight.castShadow = true;
-
-            dirLight.shadow.mapSize.width = 1024;
-
-            dirLight.shadow.mapSize.height = 1024;
-
-            scene.add(dirLight);
-
-
-
-            const gridSize = 21;
-
-            const cubeSize = 0.67375; 
-
-            const spacing = 1.0;
-
-            const offset = (gridSize * spacing) / 2 - (spacing / 2);
-
-            
-
-            const cubes = [];
-
-            const gridGroup = new THREE.Group();
-
-            scene.add(gridGroup);
-
-            const geometry = new THREE.RoundedBoxGeometry(cubeSize, cubeSize, cubeSize, 3, 0.03);
-
-            
-
-            const colors = [];
-
-            const posAttribute = geometry.attributes.position;
-
-            const colorDark = new THREE.Color(0x1a1a1a); 
-
-            const colorLight = new THREE.Color(0xdadada); 
-
-
-
-            for (let i = 0; i < posAttribute.count; i++) {
-
-                const y = posAttribute.getY(i);
-
-                const t = (y + cubeSize / 2) / cubeSize;
-
-                const c = colorDark.clone().lerp(colorLight, t);
-
-                colors.push(c.r, c.g, c.b);
-
-            }
-
-            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-
-            const baseMaterial = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.2, metalness: 0.4 });
-
-
-
-            const pathCoords = [];
-
-            let currentX = 2; let currentZ = 2;
-
-            pathCoords.push({x: currentX, z: currentZ});
-
-            
-
-            const moves = [
-
-                {dx: 4, dz: 0}, {dx: 0, dz: 4}, {dx: -2, dz: 0}, 
-
-                {dx: 0, dz: 5}, {dx: 8, dz: 0}, {dx: 0, dz: -4}, 
-
-                {dx: 5, dz: 0}, {dx: 0, dz: 10}, {dx: -9, dz: 0}, 
-
-                {dx: 0, dz: 3}, {dx: -4, dz: 0}
-
-            ];
-
-            
-
-            moves.forEach(m => {
-
-                let steps = Math.abs(m.dx || m.dz);
-
-                for(let i=0; i<steps; i++) {
-
-                    if(m.dx > 0) currentX++; else if(m.dx < 0) currentX--; else if(m.dz > 0) currentZ++; else if(m.dz < 0) currentZ--;
-
-                    currentX = clamp(currentX, 0, gridSize - 1); currentZ = clamp(currentZ, 0, gridSize - 1);
-
-                    let last = pathCoords[pathCoords.length-1];
-
-                    if (last.x !== currentX || last.z !== currentZ) pathCoords.push({x: currentX, z: currentZ});
-
-                }
-
-            });
-
-
-
-            const pathReversed = [...pathCoords].reverse().slice(1);
-
-            const loopedPathCoords = pathCoords.concat(pathReversed);
-
-
-
-            function isPathCell(gx, gz) { return pathCoords.some(p => p.x === gx && p.z === gz); }
-
-            function getDistToPath(gx, gz) {
-
-                let minDist = Infinity;
-
-                for (let p of pathCoords) {
-
-                    let d = Math.sqrt(Math.pow(gx - p.x, 2) + Math.pow(gz - p.z, 2));
-
-                    if (d < minDist) minDist = d;
-
-                }
-
-                return minDist;
-
-            }
-
-
-
-            for (let x = 0; x < gridSize; x++) {
-
-                for (let z = 0; z < gridSize; z++) {
-
-                    const material = baseMaterial.clone(); 
-
-                    const mesh = new THREE.Mesh(geometry, material);
-
-                    const posX = (x * spacing) - offset;
-
-                    const posZ = (z * spacing) - offset;
-
-                    mesh.position.set(posX, 0, posZ);
-
-                    mesh.castShadow = true; mesh.receiveShadow = true;
-
-                    cubes.push({ mesh, gridX: x, gridZ: z, isPath: isPathCell(x, z), distToPath: getDistToPath(x, z), currentHeight: 0.5 });
-
-                    gridGroup.add(mesh);
-
-                }
-
-            }
-
-
-
-            const worldPath = loopedPathCoords.map(p => new THREE.Vector3((p.x * spacing) - offset, 0, (p.z * spacing) - offset));
-
-
-
-            const ballRadius = 0.50; 
-
-            const ball = new THREE.Mesh(
-
-                new THREE.SphereGeometry(ballRadius, 32, 32), 
-
-                new THREE.MeshStandardMaterial({ 
-
-                    color: 0xff285a, 
-
-                    roughness: 0.1, 
-
-                    metalness: 0.6, 
-
-                    emissive: 0xff285a, 
-
-                    emissiveIntensity: 0.5 
-
-                })
-
-            );
-
-            ball.castShadow = true; ball.receiveShadow = true;
-
-            scene.add(ball);
-
-            
-
-            const ballLight = new THREE.PointLight(0xff285a, 0.6, 6); 
-
-            ball.add(ballLight); 
-
-            
-
-            const heroSpotlight = new THREE.SpotLight(0xffffff, 1.5); 
-
-            heroSpotlight.position.set(0, 20, 0); 
-
-            scene.add(heroSpotlight); 
-
-            scene.add(heroSpotlight.target);
-
-
-
-            const emissiveDark = new THREE.Color(0x000000); 
-
-            const emissivePink = new THREE.Color(0xff285a).multiplyScalar(1.2); 
-
-            const tempColor1 = new THREE.Color(); 
-
-
-
-            const clock = new THREE.Clock(); 
-
-
-
-            window.addEventListener('resize', () => {
-
-                if(!container) return;
-
-                camera.aspect = container.clientWidth / container.clientHeight;
-
-                camera.updateProjectionMatrix();
-
-                renderer.setSize(container.clientWidth, container.clientHeight);
-
-            });
-
-
-
-            function animate() {
-
-                requestAnimationFrame(animate);
-
-                
-
-                const rect = container.getBoundingClientRect();
-
-                if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-
-
-
-                const time = clock.getElapsedTime();
-
-
-
-                heroSpotlight.position.x = gridGroup.position.x + Math.sin(time * 0.5) * 14;
-
-                heroSpotlight.position.y = gridGroup.position.y + 20;
-
-                heroSpotlight.position.z = gridGroup.position.z + Math.cos(time * 0.3) * 14;
-
-                heroSpotlight.target.position.set(gridGroup.position.x + Math.sin(time * 0.5 + 0.5) * 8, gridGroup.position.y, gridGroup.position.z + Math.cos(time * 0.3 + 0.5) * 8);
-
-
-
-                cubes.forEach(c => {
-
-                    const wallPattern = Math.max(Math.pow(Math.abs(Math.sin(c.gridX * 0.5 + time * 0.8)), 8), Math.pow(Math.abs(Math.cos(c.gridZ * 0.5 - time * 0.8)), 8));
-
-                    let targetH = 1.0 + wallPattern * 2.5;
-
-                    
-
-                    if (c.isPath) {
-
-                        targetH = 0.5;
-
-                        c.mesh.material.emissive.copy(emissiveDark);
-
-                    } else {
-
-                        targetH = Math.max(0.5, targetH);
-
-                        if (c.distToPath <= 3.0) {
-
-                            tempColor1.lerpColors(emissiveDark, emissivePink, Math.max(0, 1 - (c.distToPath/3)) * 0.45);
-
-                            c.mesh.material.emissive.copy(tempColor1);
-
-                        } else {
-
-                            c.mesh.material.emissive.copy(emissiveDark);
-
-                        }
-
-                    }
-
-
-
-                    const h = Math.max(0.001, targetH);
-
-                    c.mesh.scale.setScalar(1.0);
-
-                    c.mesh.scale.y = h;
-
-                    c.mesh.position.y = h / 2;
-
-                    c.currentHeight = h;
-
-                });
-
-
-
-                const speed = 4.0; 
-
-                let pathProgress = (time * speed) % (worldPath.length - 1);
-
-                let idx = Math.floor(pathProgress);
-
-                let weight = pathProgress - idx;
-
-                
-
-                let currentPos = worldPath[idx];
-
-                let nextPos = worldPath[Math.min(idx + 1, worldPath.length - 1)];
-
-                
-
-                let tx = THREE.MathUtils.lerp(currentPos.x, nextPos.x, weight);
-
-                let tz = THREE.MathUtils.lerp(currentPos.z, nextPos.z, weight);
-
-
-
-                ball.position.x += (tx - ball.position.x) * 0.2; 
-
-                ball.position.z += (tz - ball.position.z) * 0.2;
-
-                
-
-                const cB = cubes.find(c => c.gridX === Math.round((ball.position.x-gridGroup.position.x+offset)/spacing) && c.gridZ === Math.round((ball.position.z-gridGroup.position.z+offset)/spacing));
-
-                let targetY = (cB ? cB.currentHeight : 0.5) + ballRadius + gridGroup.position.y;
-
-                ball.position.y += (targetY - ball.position.y) * 0.2;
-
-
-
-                gridGroup.rotation.y = Math.sin(time * 0.1) * 0.1;
-
-
-
-                renderer.render(scene, camera);
-
-            }
-
-            
-
-            animate();
-
-        }
-
-
-
-        // Phase 1 Visual: Clean Pyramid Structure (No Nodes/Lines)
-
-        function createPyramidVisual(containerId) {
-
-            const container = document.getElementById(containerId);
-
-            if (!container) return;
-
-
-
-            const camX = parseFloat(container.getAttribute('data-cam-x')) || 25;
-
-            const camY = parseFloat(container.getAttribute('data-cam-y')) || 30;
-
-            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 25;
-
-
-
-            const scene = new THREE.Scene();
-
-            scene.fog = new THREE.FogExp2(0x000000, 0.015);
-
-
-
-            const camera = new THREE.PerspectiveCamera(25, container.clientWidth / container.clientHeight, 1, 1000);
-
-            camera.position.set(camX, camY, camZ);
-
-            camera.lookAt(0, 0, 0);
-
-
-
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-
-            renderer.setSize(container.clientWidth, container.clientHeight);
-
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-            renderer.shadowMap.enabled = true;
-
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-            container.appendChild(renderer.domElement);
-
-
-
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
-
-            scene.add(ambientLight);
-
-            
-
-            const dirLight = new THREE.DirectionalLight(0xffffff, 0.6); 
-
-            dirLight.position.set(30, 60, -10);
-
-            dirLight.castShadow = true;
-
-            scene.add(dirLight);
-
-
-
-            const heroSpotlight = new THREE.SpotLight(0xffffff, 1.5); 
-
-            heroSpotlight.position.set(0, 20, 0); 
-
-            scene.add(heroSpotlight); 
-
-            scene.add(heroSpotlight.target);
-
-
-
-            const gridSize = 21;
-
-            const cubeSize = 0.67375; 
-
-            const spacing = 1.0;
-
-            const offset = (gridSize * spacing) / 2 - (spacing / 2);
-
-            
-
-            const cubes = [];
-
-            const gridGroup = new THREE.Group();
-
-            scene.add(gridGroup);
-
-            const geometry = new THREE.RoundedBoxGeometry(cubeSize, cubeSize, cubeSize, 3, 0.03);
-
-            
-
-            const colors = [];
-
-            const posAttribute = geometry.attributes.position;
-
-            const colorDark = new THREE.Color(0x1a1a1a); 
-
-            const colorLight = new THREE.Color(0xdadada); 
-
-
-
-            for (let i = 0; i < posAttribute.count; i++) {
-
-                const y = posAttribute.getY(i);
-
-                const t = (y + cubeSize / 2) / cubeSize;
-
-                const c = colorDark.clone().lerp(colorLight, t);
-
-                colors.push(c.r, c.g, c.b);
-
-            }
-
-            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-
-            const baseMaterial = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.2, metalness: 0.4 });
-
-
-
-            for (let x = 0; x < gridSize; x++) {
-
-                for (let z = 0; z < gridSize; z++) {
-
-                    const material = baseMaterial.clone(); 
-
-                    const mesh = new THREE.Mesh(geometry, material);
-
-                    const posX = (x * spacing) - offset;
-
-                    const posZ = (z * spacing) - offset;
-
-                    mesh.position.set(posX, 0, posZ);
-
-                    mesh.castShadow = true; mesh.receiveShadow = true;
-
-                    cubes.push({ mesh, gridX: x, gridZ: z, currentHeight: 0.5 });
-
-                    gridGroup.add(mesh);
-
-                }
-
-            }
-
-
-
-            const emissiveDark = new THREE.Color(0x000000); 
-
-            const colorGrayBase = new THREE.Color(0x3a3a3a).multiplyScalar(0.25); 
-
-            const colorPinkAccent = new THREE.Color(0xff285a).multiplyScalar(0.4);
-
-
-
-            const clock = new THREE.Clock(); 
-
-
-
-            window.addEventListener('resize', () => {
-
-                if(!container) return;
-
-                camera.aspect = container.clientWidth / container.clientHeight;
-
-                camera.updateProjectionMatrix();
-
-                renderer.setSize(container.clientWidth, container.clientHeight);
-
-            });
-
-
-
-            function animate() {
-
-                requestAnimationFrame(animate);
-
-                
-
-                const rect = container.getBoundingClientRect();
-
-                if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-
-
-
-                const time = clock.getElapsedTime();
-
-
-
-                heroSpotlight.position.x = gridGroup.position.x + Math.sin(time * 0.5) * 14;
-
-                heroSpotlight.position.y = gridGroup.position.y + 20;
-
-                heroSpotlight.position.z = gridGroup.position.z + Math.cos(time * 0.3) * 14;
-
-                heroSpotlight.target.position.set(gridGroup.position.x + Math.sin(time * 0.5 + 0.5) * 8, gridGroup.position.y, gridGroup.position.z + Math.cos(time * 0.3 + 0.5) * 8);
-
-
-
-                cubes.forEach(c => {
-
-                    let d = Math.max(Math.abs(c.gridX - 10), Math.abs(c.gridZ - 10)); // Distance from center
-
-                    
-
-                    // Base Pyramid Tiers Only
-
-                    let pHeight = 0.5;
-
-                    c.mesh.material.emissive.copy(emissiveDark);
-
-
-
-                    if (d <= 5) { pHeight = 1.5; c.mesh.material.emissive.copy(colorPinkAccent); }
-
-                    if (d <= 3) { pHeight = 3.0; c.mesh.material.emissive.copy(colorGrayBase); }
-
-                    if (d <= 1) { pHeight = 4.5; c.mesh.material.emissive.copy(colorGrayBase); }
-
-                    
-
-                    const h = Math.max(0.001, pHeight);
-
-                    c.mesh.scale.setScalar(1.0);
-
-                    c.mesh.scale.y = h;
-
-                    c.mesh.position.y = h / 2;
-
-                    c.currentHeight = h;
-
-                });
-
-
-
-                // Slowly rotate the entire grid for presentation effect
-
-                gridGroup.rotation.y = Math.sin(time * 0.1) * 0.15;
-
-
-
-                renderer.render(scene, camera);
-
-            }
-
-            
-
-            animate();
-
-        }
-
-
-
-        // Phase 2 Visual: Algorithmic Bias Nodes, Lines, & Bouncing Ball
-
-        function createNodesVisual(containerId) {
-
-            const container = document.getElementById(containerId);
-
-            if (!container) return;
-
-
-
-            const camX = parseFloat(container.getAttribute('data-cam-x')) || 35;
-
-            const camY = parseFloat(container.getAttribute('data-cam-y')) || 25;
-
-            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 35;
-
-
-
-            const scene = new THREE.Scene();
-
-            scene.fog = new THREE.FogExp2(0x000000, 0.015);
-
-
-
-            const camera = new THREE.PerspectiveCamera(25, container.clientWidth / container.clientHeight, 1, 1000);
-
-            camera.position.set(camX, camY, camZ);
-
-            camera.lookAt(0, 0, 0);
-
-
-
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-
-            renderer.setSize(container.clientWidth, container.clientHeight);
-
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-            renderer.shadowMap.enabled = true;
-
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-            container.appendChild(renderer.domElement);
-
-
-
-            // Interactive Controls
-
-            const controls = new THREE.OrbitControls(camera, renderer.domElement);
-
-            controls.enableDamping = true;
-
-            controls.dampingFactor = 0.05;
-
-            controls.maxPolarAngle = Math.PI / 2 - 0.05;
-
-            controls.minDistance = 15;
-
-            controls.maxDistance = 80;
-
-            controls.enableZoom = false; // CRITICAL: Prevent scroll hijacking
-
-            controls.target.set(0, -2, 0);
-
-
-
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
-
-            scene.add(ambientLight);
-
-            
-
-            const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
-
-            dirLight.position.set(30, 60, -10);
-
-            dirLight.castShadow = true;
-
-            dirLight.shadow.mapSize.width = 1024;
-
-            dirLight.shadow.mapSize.height = 1024;
-
-            scene.add(dirLight);
-
-
-
-            const heroSpotlight = new THREE.SpotLight(0xffffff, 1.5); 
-
-            heroSpotlight.position.set(0, 20, 0); 
-
-            heroSpotlight.angle = Math.PI / 4;
-
-            heroSpotlight.penumbra = 0.5;
-
-            scene.add(heroSpotlight); 
-
-            scene.add(heroSpotlight.target);
-
-
-
-            const emissiveDark = new THREE.Color(0x000000); 
-
-            const emissivePink = new THREE.Color(0xff285a).multiplyScalar(1.2); 
-
-            const colorPinkAccent = new THREE.Color(0xff285a).multiplyScalar(0.4);
-
-            const tempNodeColor = new THREE.Color();
-
-
-
-            const gridSize = 21;
-
-            const cubeSize = 0.67375; 
-
-            const spacing = 1.0;
-
-            const offset = (gridSize * spacing) / 2 - (spacing / 2);
-
-            
-
-            const cubes = [];
-
-            const gridGroup = new THREE.Group();
-
-            gridGroup.position.set(0, -2, 0); 
-
-            scene.add(gridGroup);
-
-            
-
-            const geometry = new THREE.RoundedBoxGeometry(cubeSize, cubeSize, cubeSize, 3, 0.03);
-
-            const colors = [];
-
-            const posAttribute = geometry.attributes.position;
-
-            const colorDark = new THREE.Color(0x1a1a1a); 
-
-            const colorLight = new THREE.Color(0xdadada); 
-
-
-
-            for (let i = 0; i < posAttribute.count; i++) {
-
-                const y = posAttribute.getY(i);
-
-                const t = (y + cubeSize / 2) / cubeSize;
-
-                const c = colorDark.clone().lerp(colorLight, t);
-
-                colors.push(c.r, c.g, c.b);
-
-            }
-
-            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-
-            const baseMaterial = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.2, metalness: 0.4 });
-
-
-
-            for (let x = 0; x < gridSize; x++) {
-
-                for (let z = 0; z < gridSize; z++) {
-
-                    const material = baseMaterial.clone(); 
-
-                    const mesh = new THREE.Mesh(geometry, material);
-
-                    const posX = (x * spacing) - offset;
-
-                    const posZ = (z * spacing) - offset;
-
-                    mesh.position.set(posX, 0, posZ);
-
-                    mesh.castShadow = true; 
-
-                    mesh.receiveShadow = true;
-
-                    cubes.push({ mesh, gridX: x, gridZ: z, currentHeight: 0.5 });
-
-                    gridGroup.add(mesh);
-
-                }
-
-            }
-
-
-
-            const nodes = [
-
-                {x: 4, z: 4, h: 4}, {x: 8, z: 3, h: 6}, {x: 14, z: 5, h: 3}, 
-
-                {x: 3, z: 10, h: 5}, {x: 9, z: 11, h: 4}, {x: 15, z: 12, h: 5}, 
-
-                {x: 5, z: 16, h: 3}, {x: 11, z: 17, h: 6}, {x: 16, z: 16, h: 4}, 
-
-                {x: 7, z: 8, h: 5}, {x: 12, z: 7, h: 4}, {x: 10, z: 14, h: 5}
-
-            ];
-
-            
-
-            const edges = [
-
-                [0,3], [3,9], [9,11], [11,7], [7,5], [5,2], [2,10], 
-
-                [10,1], [1,4], [4,8], [8,6], [6,0], [3,6], [9,4], [11,8], [1,10]
-
-            ];
-
-            
-
-            const lineGeo = new THREE.BufferGeometry();
-
-            const linePositions = new Float32Array(edges.length * 6);
-
-            lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
-
-            
-
-            const lineMat = new THREE.LineBasicMaterial({ 
-
-                color: 0xff285a, 
-
-                transparent: true, 
-
-                opacity: 0.8,
-
-                linewidth: 2 
-
-            });
-
-            const linesMesh = new THREE.LineSegments(lineGeo, lineMat);
-
-            gridGroup.add(linesMesh);
-
-
-
-            const ballRadius = 0.50; 
-
-            const ballMat = new THREE.MeshStandardMaterial({ 
-
-                color: 0xff285a, 
-
-                roughness: 0.1, 
-
-                metalness: 0.6, 
-
-                emissive: 0xff285a, 
-
-                emissiveIntensity: 0.8 
-
-            });
-
-            const ball = new THREE.Mesh(new THREE.SphereGeometry(ballRadius, 32, 32), ballMat);
-
-            ball.castShadow = true; 
-
-            ball.receiveShadow = true;
-
-            
-
-            const ballLight = new THREE.PointLight(0xff285a, 1.2, 8); 
-
-            ball.add(ballLight); 
-
-            scene.add(ball);
-
-
-
-            const ballNodePath = [0, 3, 9, 11, 7, 5, 2, 1, 4, 8, 10, 6]; 
-
-
-
-            const clock = new THREE.Clock();
-
-            let tx = 0, tz = 0, arc = 0;
-
-
-
-            window.addEventListener('resize', () => {
-
-                if(!container) return;
-
-                camera.aspect = container.clientWidth / container.clientHeight;
-
-                camera.updateProjectionMatrix();
-
-                renderer.setSize(container.clientWidth, container.clientHeight);
-
-            });
-
-
-
-            function animate() {
-
-                requestAnimationFrame(animate);
-
-                
-
-                const rect = container.getBoundingClientRect();
-
-                if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-
-
-
-                const time = clock.getElapsedTime();
-
-
-
-                controls.update();
-
-
-
-                heroSpotlight.position.x = Math.sin(time * 0.5) * 14;
-
-                heroSpotlight.position.z = Math.cos(time * 0.3) * 14;
-
-                heroSpotlight.target.position.set(Math.sin(time * 0.5 + 0.5) * 8, 0, Math.cos(time * 0.3 + 0.5) * 8);
-
-
-
-                cubes.forEach(c => {
-
-                    let targetH = 0.5;
-
-                    let targetColor = emissiveDark;
-
-
-
-                    const nIdx = nodes.findIndex(n => n.x === c.gridX && n.z === c.gridZ);
-
-                    
-
-                    if (nIdx !== -1) {
-
-                        targetH = nodes[nIdx].h + Math.sin(time * 2 + nIdx) * 0.4;
-
-                        tempNodeColor.lerpColors(colorPinkAccent, emissivePink, 0.5 + Math.sin(time * 2 + nIdx) * 0.5);
-
-                        targetColor = tempNodeColor;
-
-                    }
-
-
-
-                    c.mesh.material.emissive.copy(targetColor);
-
-                    c.mesh.scale.set(1, targetH, 1);
-
-                    c.mesh.position.y = targetH / 2;
-
-                    c.currentHeight = targetH;
-
-                });
-
-
-
-                linesMesh.material.opacity = 0.3 + Math.sin(time * 3) * 0.3;
-
-                const pos = linesMesh.geometry.attributes.position.array; 
-
-                let idx = 0;
-
-                
-
-                edges.forEach(e => {
-
-                    const n1 = nodes[e[0]]; 
-
-                    const n2 = nodes[e[1]];
-
-                    const c1 = cubes.find(c => c.gridX === n1.x && c.gridZ === n1.z); 
-
-                    const c2 = cubes.find(c => c.gridX === n2.x && c.gridZ === n2.z);
-
-                    
-
-                    pos[idx++] = (n1.x * spacing) - offset; 
-
-                    pos[idx++] = c1 ? c1.currentHeight : 0.5; 
-
-                    pos[idx++] = (n1.z * spacing) - offset;
-
-                    
-
-                    pos[idx++] = (n2.x * spacing) - offset; 
-
-                    pos[idx++] = c2 ? c2.currentHeight : 0.5; 
-
-                    pos[idx++] = (n2.z * spacing) - offset;
-
-                });
-
-                linesMesh.geometry.attributes.position.needsUpdate = true;
-
-
-
-                const jumpTime = (time * 1.2); 
-
-                const jumpIdx = Math.floor(jumpTime) % ballNodePath.length;
-
-                const nextJumpIdx = (jumpIdx + 1) % ballNodePath.length;
-
-                
-
-                let jumpFrac = jumpTime % 1;
-
-                let easeFrac = clamp((jumpFrac - 0.2) / 0.6, 0, 1);
-
-                easeFrac = easeFrac * easeFrac * (3 - 2 * easeFrac); 
-
-                
-
-                const n1 = nodes[ballNodePath[jumpIdx]]; 
-
-                const n2 = nodes[ballNodePath[nextJumpIdx]];
-
-                
-
-                const lx = THREE.MathUtils.lerp(n1.x, n2.x, easeFrac); 
-
-                const lz = THREE.MathUtils.lerp(n1.z, n2.z, easeFrac);
-
-                tx = (lx * spacing) - offset + gridGroup.position.x; 
-
-                tz = (lz * spacing) - offset + gridGroup.position.z;
-
-                
-
-                ball.rotation.x += (n2.z - n1.z) * (jumpFrac * 0.02); 
-
-                ball.rotation.z -= (n2.x - n1.x) * (jumpFrac * 0.02);
-
-                
-
-                arc = Math.sin(easeFrac * Math.PI) * 2.5; 
-
-
-
-                ball.position.x += (tx - ball.position.x) * 0.2; 
-
-                ball.position.z += (tz - ball.position.z) * 0.2;
-
-
-
-                const cB = cubes.find(c => 
-
-                    c.gridX === Math.round((ball.position.x - gridGroup.position.x + offset) / spacing) && 
-
-                    c.gridZ === Math.round((ball.position.z - gridGroup.position.z + offset) / spacing)
-
-                );
-
-                
-
-                const groundH = cB ? cB.currentHeight : 0.5;
-
-                const targetY = groundH + ballRadius + gridGroup.position.y + arc;
-
-                
-
-                ball.position.y += (targetY - ball.position.y) * 0.25;
-
-
-
-                renderer.render(scene, camera);
-
-            }
-
-            
-
-            animate();
-
-        }
-
-
-
-        // Phase 3 Visual: AI Capability Stairs and Ball
-
-        function createStairsVisual(containerId) {
-
-            const container = document.getElementById(containerId);
-
-            if (!container) return;
-
-
-
-            const camX = parseFloat(container.getAttribute('data-cam-x')) || 40;
-
-            const camY = parseFloat(container.getAttribute('data-cam-y')) || 30;
-
-            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 40;
-
-
-
-            const scene = new THREE.Scene();
-
-            scene.fog = new THREE.FogExp2(0x000000, 0.015);
-
-
-
-            const camera = new THREE.PerspectiveCamera(25, container.clientWidth / container.clientHeight, 1, 1000);
-
-            camera.position.set(camX, camY, camZ);
-
-            camera.lookAt(0, 0, 0);
-
-
-
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-
-            renderer.setSize(container.clientWidth, container.clientHeight);
-
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-            renderer.shadowMap.enabled = true;
-
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-            container.appendChild(renderer.domElement);
-
-
-
-            // Interactive Controls
-
-            const controls = new THREE.OrbitControls(camera, renderer.domElement);
-
-            controls.enableDamping = true;
-
-            controls.dampingFactor = 0.05;
-
-            controls.maxPolarAngle = Math.PI / 2 - 0.05; 
-
-            controls.minDistance = 15;
-
-            controls.maxDistance = 80;
-
-            controls.enableZoom = false; // CRITICAL: Prevent scroll hijacking
-
-            controls.target.set(0, -2, 0);
-
-
-
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
-
-            scene.add(ambientLight);
-
-            
-
-            const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
-
-            dirLight.position.set(30, 60, -10);
-
-            dirLight.castShadow = true;
-
-            dirLight.shadow.mapSize.width = 2048;
-
-            dirLight.shadow.mapSize.height = 2048;
-
-            scene.add(dirLight);
-
-
-
-            const heroSpotlight = new THREE.SpotLight(0xffffff, 1.5); 
-
-            heroSpotlight.position.set(0, 20, 0); 
-
-            heroSpotlight.angle = Math.PI / 4;
-
-            heroSpotlight.penumbra = 0.5;
-
-            scene.add(heroSpotlight); 
-
-            scene.add(heroSpotlight.target);
-
-
-
-            const emissiveDark = new THREE.Color(0x000000); 
-
-            const colorPinkAccent = new THREE.Color(0xff285a).multiplyScalar(0.4);
-
-            const colorWhite = new THREE.Color(0xffffff).multiplyScalar(0.6);
-
-            
-
-            const tempStairColor = new THREE.Color();
-
-            const tempGridColor = new THREE.Color();
-
-            const baseGlowColor = new THREE.Color(0xff285a);
-
-            const tempGlowColor = new THREE.Color();
-
-            
-
-            const stairTargetColors = []; 
-
-            for(let i=0; i<=8; i++) {
-
-                stairTargetColors.push(new THREE.Color().lerpColors(colorPinkAccent, colorWhite, i / 8));
-
-            }
-
-
-
-            const gridSize = 21;
-
-            const cubeSize = 0.67375; 
-
-            const spacing = 1.0;
-
-            const offset = (gridSize * spacing) / 2 - (spacing / 2);
-
-            
-
-            const cubes = [];
-
-            const gridGroup = new THREE.Group();
-
-            gridGroup.position.set(0, -2, 0); 
-
-            scene.add(gridGroup);
-
-            
-
-            const geometry = new THREE.RoundedBoxGeometry(cubeSize, cubeSize, cubeSize, 3, 0.03);
-
-            const colors = [];
-
-            const posAttribute = geometry.attributes.position;
-
-            const colorDark = new THREE.Color(0x1a1a1a); 
-
-            const colorLight = new THREE.Color(0xdadada); 
-
-
-
-            for (let i = 0; i < posAttribute.count; i++) {
-
-                const y = posAttribute.getY(i);
-
-                const t = (y + cubeSize / 2) / cubeSize;
-
-                const c = colorDark.clone().lerp(colorLight, t);
-
-                colors.push(c.r, c.g, c.b);
-
-            }
-
-            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-
-            const baseMaterial = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.2, metalness: 0.4 });
-
-
-
-            for (let x = 0; x < gridSize; x++) {
-
-                for (let z = 0; z < gridSize; z++) {
-
-                    const material = baseMaterial.clone(); 
-
-                    const mesh = new THREE.Mesh(geometry, material);
-
-                    const posX = (x * spacing) - offset;
-
-                    const posZ = (z * spacing) - offset;
-
-                    mesh.position.set(posX, 0, posZ);
-
-                    mesh.castShadow = true; 
-
-                    mesh.receiveShadow = true;
-
-                    cubes.push({ mesh, gridX: x, gridZ: z, currentHeight: 0.5 });
-
-                    gridGroup.add(mesh);
-
-                }
-
-            }
-
-
-
-            const stairsA = []; 
-
-            for(let i=0; i<=8; i++) stairsA.push({x: 5+i, z: 13-i, h: 1.0 + i*0.6, seg: 'A', idx: i});
-
-            
-
-            const stairsB = []; 
-
-            for(let i=0; i<=8; i++) stairsB.push({x: 11-i, z: 7+i, h: 1.0 + i*0.6, seg: 'B', idx: i});
-
-
-
-            const ballRadius = 0.50; 
-
-            const ballMat = new THREE.MeshStandardMaterial({ 
-
-                color: 0xff285a, 
-
-                roughness: 0.1, 
-
-                metalness: 0.6, 
-
-                emissive: 0xff285a, 
-
-                emissiveIntensity: 0.8 
-
-            });
-
-            const ball = new THREE.Mesh(new THREE.SphereGeometry(ballRadius, 32, 32), ballMat);
-
-            ball.castShadow = true; 
-
-            ball.receiveShadow = true;
-
-            
-
-            const ballLight = new THREE.PointLight(0xff285a, 1.2, 8); 
-
-            ball.add(ballLight); 
-
-            scene.add(ball);
-
-
-
-            const clock = new THREE.Clock();
-
-            let phase5BallTime = 0;
-
-
-
-            window.addEventListener('resize', () => {
-
-                if(!container) return;
-
-                camera.aspect = container.clientWidth / container.clientHeight;
-
-                camera.updateProjectionMatrix();
-
-                renderer.setSize(container.clientWidth, container.clientHeight);
-
-            });
-
-
-
-            function animate() {
-
-                requestAnimationFrame(animate);
-
-                
-
-                const rect = container.getBoundingClientRect();
-
-                if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-
-
-
-                const delta = clamp(clock.getDelta(), 0, 0.1); 
-
-                const time = clock.getElapsedTime();
-
-
-
-                controls.update();
-
-
-
-                heroSpotlight.position.x = Math.sin(time * 0.5) * 14;
-
-                heroSpotlight.position.y = 20 + Math.sin(time * 0.8) * 2;
-
-                heroSpotlight.position.z = Math.cos(time * 0.3) * 14;
-
-                heroSpotlight.target.position.set(Math.sin(time * 0.5 + 0.5) * 8, 0, Math.cos(time * 0.3 + 0.5) * 8);
-
-
-
-                phase5BallTime += delta * 4; 
-
-                let lp = phase5BallTime % 20;
-
-
-
-                cubes.forEach(c => {
-
-                    let targetH = 0.5;
-
-                    tempGridColor.copy(emissiveDark); 
-
-                    
-
-                    const sDef = stairsA.find(s => s.x === c.gridX && s.z === c.gridZ) || stairsB.find(s => s.x === c.gridX && s.z === c.gridZ);
-
-                    
-
-                    if (sDef) {
-
-                        if (sDef.seg === 'A') {
-
-                            targetH = lp < 10 
-
-                                ? 0.5 + (sDef.h - 0.5) * clamp(lp - sDef.idx + 2, 0, 1) 
-
-                                : sDef.h - (sDef.h - 0.5) * clamp(lp - 10 - sDef.idx * 0.2, 0, 1);
-
-                        } else {
-
-                            targetH = lp >= 10 
-
-                                ? 0.5 + (sDef.h - 0.5) * clamp(lp - 10 - sDef.idx + 2, 0, 1) 
-
-                                : sDef.h - (sDef.h - 0.5) * clamp(lp - sDef.idx * 0.2, 0, 1);
-
-                        }
-
-                        
-
-                        tempStairColor.lerpColors(emissiveDark, stairTargetColors[sDef.idx], clamp((targetH - 0.5) / (sDef.h - 0.5), 0, 1));
-
-                        
-
-                        if (targetH > 0.5) {
-
-                            tempGridColor.copy(tempStairColor);
-
-                        }
-
-                    }
-
-
-
-                    const ballLocalX = ball.position.x - gridGroup.position.x;
-
-                    const ballLocalZ = ball.position.z - gridGroup.position.z;
-
-                    const dx = c.mesh.position.x - ballLocalX;
-
-                    const dz = c.mesh.position.z - ballLocalZ;
-
-                    const distToBall = Math.sqrt(dx*dx + dz*dz);
-
-
-
-                    if (distToBall < 3.5) {
-
-                        const glowIntensity = Math.max(0, 1 - (distToBall / 3.5)) * 0.8;
-
-                        tempGlowColor.copy(baseGlowColor).multiplyScalar(glowIntensity);
-
-                        tempGridColor.add(tempGlowColor); 
-
-                    }
-
-
-
-                    c.mesh.material.emissive.copy(tempGridColor);
-
-                    c.mesh.scale.set(1, targetH, 1);
-
-                    c.mesh.position.y = targetH / 2;
-
-                    c.currentHeight = targetH;
-
-                });
-
-
-
-                let lx = 0, lz = 0, arc = 0;
-
-                
-
-                if (lp < 8) { 
-
-                    let idx = Math.floor(lp); 
-
-                    lx = THREE.MathUtils.lerp(stairsA[idx].x, stairsA[idx+1].x, lp-idx); 
-
-                    lz = THREE.MathUtils.lerp(stairsA[idx].z, stairsA[idx+1].z, lp-idx); 
-
-                } 
-
-                else if (lp < 10) { 
-
-                    let f = (lp-8)/2; 
-
-                    lx = THREE.MathUtils.lerp(stairsA[8].x, stairsB[0].x, f); 
-
-                    lz = THREE.MathUtils.lerp(stairsA[8].z, stairsB[0].z, f); 
-
-                    
-
-                    let easeFrac = f * f * (3 - 2 * f); 
-
-                    arc = Math.sin(easeFrac * Math.PI) * 4.0;
-
-                    
-
-                    ball.rotation.x += (stairsB[0].z - stairsA[8].z) * 0.05;
-
-                    ball.rotation.z -= (stairsB[0].x - stairsA[8].x) * 0.05;
-
-                } 
-
-                else if (lp < 18) { 
-
-                    let idx = Math.floor(lp-10); 
-
-                    lx = THREE.MathUtils.lerp(stairsB[idx].x, stairsB[idx+1].x, lp-10-idx); 
-
-                    lz = THREE.MathUtils.lerp(stairsB[idx].z, stairsB[idx+1].z, lp-10-idx); 
-
-                } 
-
-                else { 
-
-                    let f = (lp-18)/2; 
-
-                    lx = THREE.MathUtils.lerp(stairsB[8].x, stairsA[0].x, f); 
-
-                    lz = THREE.MathUtils.lerp(stairsB[8].z, stairsA[0].z, f); 
-
-                    
-
-                    let easeFrac = f * f * (3 - 2 * f);
-
-                    arc = Math.sin(easeFrac * Math.PI) * 4.0;
-
-                    
-
-                    ball.rotation.x += (stairsA[0].z - stairsB[8].z) * 0.05;
-
-                    ball.rotation.z -= (stairsA[0].x - stairsB[8].x) * 0.05;
-
-                }
-
-
-
-                const tx = (lx * spacing) - offset + gridGroup.position.x; 
-
-                const tz = (lz * spacing) - offset + gridGroup.position.z;
-
-
-
-                ball.position.x += (tx - ball.position.x) * 0.25; 
-
-                ball.position.z += (tz - ball.position.z) * 0.25;
-
-
-
-                const cB = cubes.find(c => 
-
-                    c.gridX === Math.round((ball.position.x - gridGroup.position.x + offset) / spacing) && 
-
-                    c.gridZ === Math.round((ball.position.z - gridGroup.position.z + offset) / spacing)
-
-                );
-
-                
-
-                const groundH = cB ? cB.currentHeight : 0.5;
-
-                const targetY = groundH + ballRadius + gridGroup.position.y + arc;
-
-                
-
-                ball.position.y += (targetY - ball.position.y) * 0.25;
-
-
-
-                renderer.render(scene, camera);
-
-            }
-
-            
-
-            animate();
-
-        }
-
-
-
-        // Initialize all 3D visuals
-
-        window.addEventListener('load', function() {
-
-            createLabyrinthVisual('labyrinth-canvas');        // Hero canvas
-
-            createPyramidVisual('pyramid-canvas-phase1');     // Phase 01 canvas (Clean Pyramid)
-
-            createNodesVisual('nodes-canvas-phase2');         // Phase 02 canvas (Nodes & Lines)
-
-            createStairsVisual('stairs-canvas-phase3');       // Phase 03 canvas (Stairs)
-
-        });
-
-    </script>
-
-</body>
-
-</html>
-
-Gemini said
-This is a beautifully structured proposal! The use of Three.js for conceptual visuals and the glassmorphism UI gives it a highly premium, modern consulting feel.
-
-To continue the work and make this a fully complete, production-ready landing page, I have added the following functional and structural enhancements:
-
-Preloader: Added a sleek, branded loading screen. Since Three.js takes a moment to compile shaders and render the initial frames, a preloader ensures the user doesn't see a blank or stuttering canvas on their first load.
-
-Interactive Contact Form: In the "Next Steps" section, I added a glassmorphism contact/booking form so the client has an immediate, actionable way to request the "Chemistry Session."
-
-Professional Footer: Added a clean footer with copyright and structural grounding at the end of the page.
-
-Mobile Polish: Ensured the form and new sections scale perfectly on smaller devices.
-
-Here is the complete, updated code:
-Proposal Website
-27 Mar, 09:57
-
-You said
-Replace the Labyrinth visual in the here section with this one - here is a code for it.
-
-
-
-<!DOCTYPE html>
-
-<html lang="en">
-
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Labyrinth Maze Visual</title>
-
-    
-
-    <!-- Three.js & Required Addons -->
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/RoundedBoxGeometry.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-
-
-
-    <style>
-
-        body {
-
-            margin: 0;
-
-            padding: 0;
-
-            background-color: #000000;
-
-            overflow: hidden; 
-
-            font-family: sans-serif;
-
-            -webkit-font-smoothing: antialiased;
-
-        }
-
-
-
-        #canvas-container {
-
-            position: fixed;
-
-            top: 0;
-
-            left: 0;
-
-            width: 100vw;
-
-            height: 100vh;
-
-            z-index: 0;
-
-            cursor: grab;
-
-        }
-
-
-
-        #canvas-container:active {
-
-            cursor: grabbing;
-
-        }
-
-
-
-        .overlay {
-
-            position: fixed;
-
-            top: 40px;
-
-            left: 40px;
-
-            color: white;
-
-            z-index: 10;
-
-            pointer-events: none;
-
-        }
-
-
-
-        .overlay h1 {
-
-            font-size: 24px;
-
-            letter-spacing: 0.1em;
-
-            margin: 0;
-
-            text-transform: uppercase;
-
-            text-shadow: 0 0 20px rgba(255, 40, 90, 0.5);
-
-        }
-
-
-
-        .overlay p {
-
-            color: #888;
-
-            font-size: 14px;
-
-            letter-spacing: 0.05em;
-
-            margin-top: 8px;
-
-        }
-
-    </style>
-
-</head>
-
-<body>
-
-
-
-    <div class="overlay">
-
-        <h1>Labyrinth Visual</h1>
-
-        <p>Drag to rotate • Scroll to zoom</p>
-
-    </div>
-
-
-
-    <div id="canvas-container"></div>
-
-
-
-    <script>
-
-        const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
-
-
-
-        window.onload = function() {
-
-            // --- Scene & Camera Setup ---
-
-            const container = document.getElementById('canvas-container');
-
-            const scene = new THREE.Scene();
-
             scene.fog = new THREE.FogExp2(0x000000, 0.012);
 
-
-
-            const camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 1, 1000);
-
-            camera.position.set(45, 45, 45); 
-
+            const camera = new THREE.PerspectiveCamera(25, container.clientWidth / container.clientHeight, 1, 1000);
+            camera.position.set(camX, camY, camZ); 
             camera.lookAt(0, 0, 0);
 
-
-
             const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-
-            renderer.setSize(window.innerWidth, window.innerHeight);
-
+            renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
             renderer.shadowMap.enabled = true;
-
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
             container.appendChild(renderer.domElement);
 
-
-
-            // --- Interactive Controls ---
-
+            // Interactive Controls
             const controls = new THREE.OrbitControls(camera, renderer.domElement);
-
             controls.enableDamping = true;
-
             controls.dampingFactor = 0.05;
-
             controls.maxPolarAngle = Math.PI / 2 - 0.05; 
-
-            controls.minDistance = 20;
-
+            controls.minDistance = 10;
             controls.maxDistance = 100;
-
+            controls.enableZoom = false; // Prevent scroll hijacking
             controls.target.set(0, -2, 0);
 
-
-
-            // --- Lighting ---
-
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
-
             scene.add(ambientLight);
-
             
-
             const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
-
             dirLight.position.set(30, 60, -10);
-
             dirLight.castShadow = true;
-
             dirLight.shadow.mapSize.width = 2048;
-
             dirLight.shadow.mapSize.height = 2048;
-
             scene.add(dirLight);
 
-
-
             const heroSpotlight = new THREE.SpotLight(0xffffff, 1.5); 
-
             heroSpotlight.position.set(0, 20, 0); 
-
             heroSpotlight.angle = Math.PI / 4;
-
             heroSpotlight.penumbra = 0.5;
-
             scene.add(heroSpotlight); 
-
             scene.add(heroSpotlight.target);
 
-
-
-            // --- Colors & Performance Variables ---
-
             const emissiveDark = new THREE.Color(0x000000); 
-
             const emissivePink = new THREE.Color(0xff285a).multiplyScalar(1.2); 
-
             const baseGlowColor = new THREE.Color(0xff285a);
-
             
-
             const tempGridColor = new THREE.Color();
-
             const tempGlowColor = new THREE.Color();
-
             const tempVec3 = new THREE.Vector3();
 
-
-
-            // --- Grid & Path Setup ---
-
             const gridSize = 21;
-
             const cubeSize = 0.67375; 
-
             const spacing = 1.0;
-
             const offset = (gridSize * spacing) / 2 - (spacing / 2);
-
             
-
             const gridGroup = new THREE.Group();
-
             gridGroup.position.set(0, -2, 0); 
-
             scene.add(gridGroup);
 
-
-
-            // Generate Path Data
-
             const pathCoords = [];
-
             let currentX = 2; let currentZ = 2;
-
             pathCoords.push({x: currentX, z: currentZ});
-
             
-
             const moves = [
-
                 {dx: 4, dz: 0}, {dx: 0, dz: 4}, {dx: -2, dz: 0}, 
-
                 {dx: 0, dz: 5}, {dx: 8, dz: 0}, {dx: 0, dz: -4}, 
-
                 {dx: 5, dz: 0}, {dx: 0, dz: 10}, {dx: -9, dz: 0}, 
-
                 {dx: 0, dz: 3}, {dx: -4, dz: 0}
-
             ];
-
             
-
             moves.forEach(m => {
-
                 let steps = Math.abs(m.dx || m.dz);
-
                 for(let i=0; i<steps; i++) {
-
                     if(m.dx > 0) currentX++; else if(m.dx < 0) currentX--; else if(m.dz > 0) currentZ++; else if(m.dz < 0) currentZ--;
-
                     currentX = clamp(currentX, 0, gridSize - 1); currentZ = clamp(currentZ, 0, gridSize - 1);
-
                     let last = pathCoords[pathCoords.length-1];
-
                     if (last.x !== currentX || last.z !== currentZ) pathCoords.push({x: currentX, z: currentZ});
-
                 }
-
             });
-
-
-
-            // Convert path coordinates to World Coordinates for the Ball
 
             const worldPath = pathCoords.map(p => new THREE.Vector3((p.x * spacing) - offset, 0, (p.z * spacing) - offset));
 
-
-
-            // Helper functions
+            const lastPos = worldPath[worldPath.length - 1];
+            const prevPos = worldPath[worldPath.length - 2];
+            const fallDir = new THREE.Vector3().subVectors(lastPos, prevPos).normalize();
 
             function isPathCell(gx, gz) { 
-
                 return pathCoords.some(p => p.x === gx && p.z === gz); 
-
             }
-
             
-
             function getDistToPath(gx, gz) {
-
                 let minDist = Infinity;
-
                 for (let p of pathCoords) {
-
                     let d = Math.sqrt(Math.pow(gx - p.x, 2) + Math.pow(gz - p.z, 2));
-
                     if (d < minDist) minDist = d;
-
                 }
-
                 return minDist;
-
             }
-
-
 
             const cubes = [];
-
             const geometry = new THREE.RoundedBoxGeometry(cubeSize, cubeSize, cubeSize, 3, 0.03);
-
             const colors = [];
-
             const posAttribute = geometry.attributes.position;
-
             const colorDark = new THREE.Color(0x1a1a1a); 
-
             const colorLight = new THREE.Color(0xdadada); 
 
-
-
-            // Create gradient across boxes
-
             for (let i = 0; i < posAttribute.count; i++) {
-
                 const y = posAttribute.getY(i);
-
                 const t = (y + cubeSize / 2) / cubeSize;
-
                 const c = colorDark.clone().lerp(colorLight, t);
-
                 colors.push(c.r, c.g, c.b);
-
             }
-
             geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-
             const baseMaterial = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.2, metalness: 0.4 });
 
-
-
             for (let x = 0; x < gridSize; x++) {
-
                 for (let z = 0; z < gridSize; z++) {
-
                     const material = baseMaterial.clone(); 
-
                     const mesh = new THREE.Mesh(geometry, material);
-
                     const posX = (x * spacing) - offset;
-
                     const posZ = (z * spacing) - offset;
-
                     mesh.position.set(posX, 0, posZ);
-
                     mesh.castShadow = true; 
-
                     mesh.receiveShadow = true;
-
                     cubes.push({ 
-
                         mesh, 
-
                         gridX: x, 
-
                         gridZ: z, 
-
                         isPath: isPathCell(x, z), 
-
                         distToPath: getDistToPath(x, z), 
-
                         currentHeight: 0.5 
-
                     });
-
                     gridGroup.add(mesh);
-
                 }
-
             }
 
-
-
-            // --- The Pink Ball ---
-
             const ballRadius = 0.50; 
-
             const ballMat = new THREE.MeshStandardMaterial({ 
-
                 color: 0xff285a, 
-
                 roughness: 0.1, 
-
                 metalness: 0.6, 
-
                 emissive: 0xff285a, 
-
                 emissiveIntensity: 0.8 
-
             });
-
             const ball = new THREE.Mesh(new THREE.SphereGeometry(ballRadius, 32, 32), ballMat);
-
             ball.castShadow = true; 
-
             ball.receiveShadow = true;
-
             
-
             const ballLight = new THREE.PointLight(0xff285a, 1.2, 8); 
-
             ball.add(ballLight); 
-
             scene.add(ball);
-
-
-
-            // Starting position
 
             ball.position.set(worldPath[0].x, 0, worldPath[0].z);
 
-
-
-            // --- Animation Loop Variables ---
-
             const clock = new THREE.Clock();
-
             let currentBallProgress = 0;
 
-
-
             window.addEventListener('resize', () => {
-
-                camera.aspect = window.innerWidth / window.innerHeight;
-
+                if(!container) return;
+                camera.aspect = container.clientWidth / container.clientHeight;
                 camera.updateProjectionMatrix();
-
-                renderer.setSize(window.innerWidth, window.innerHeight);
-
+                renderer.setSize(container.clientWidth, container.clientHeight);
             });
 
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                const rect = container.getBoundingClientRect();
+                if (rect.bottom < 0 || rect.top > window.innerHeight) return;
 
+                const time = clock.getElapsedTime();
+                controls.update();
+
+                heroSpotlight.position.x = Math.sin(time * 0.5) * 14;
+                heroSpotlight.position.y = 20 + Math.sin(time * 0.8) * 2;
+                heroSpotlight.position.z = Math.cos(time * 0.3) * 14;
+                heroSpotlight.target.position.set(Math.sin(time * 0.5 + 0.5) * 8, 0, Math.cos(time * 0.3 + 0.5) * 8);
+
+                const cycleTime = time % 15;
+                let flatP = 0; 
+                
+                if (cycleTime >= 2 && cycleTime < 4) {
+                    flatP = (cycleTime - 2) / 2; 
+                } else if (cycleTime >= 4 && cycleTime < 12) {
+                    flatP = 1; 
+                } else if (cycleTime >= 12 && cycleTime < 14) {
+                    flatP = 1 - ((cycleTime - 12) / 2); 
+                }
+                
+                flatP = flatP * flatP * (3 - 2 * flatP); 
+
+                let ballTargetIdx = 0;
+                let isFalling = false;
+                let fallT = 0;
+
+                if (cycleTime >= 4.5 && cycleTime < 10) {
+                    let t = (cycleTime - 4.5) / 5.5;
+                    t = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+                    ballTargetIdx = t * (worldPath.length - 1);
+                } else if (cycleTime >= 10 && cycleTime < 13) {
+                    ballTargetIdx = worldPath.length - 1;
+                } else if (cycleTime >= 13 && cycleTime < 14.5) {
+                    ballTargetIdx = worldPath.length - 1;
+                    isFalling = true;
+                    fallT = cycleTime - 13; // 0 to 1.5 seconds of falling
+                }
+
+                if (cycleTime > 14.5 && cycleTime < 14.8) {
+                    currentBallProgress = 0;
+                    ballTargetIdx = 0;
+                    ball.position.x = worldPath[0].x;
+                    ball.position.z = worldPath[0].z;
+                    ball.position.y = 0;
+                    ball.visible = false;
+                } else {
+                    ball.visible = true;
+                    currentBallProgress += (ballTargetIdx - currentBallProgress) * 0.05;
+                }
+
+                cubes.forEach(c => {
+                    const wallPattern = Math.max(
+                        Math.pow(Math.abs(Math.sin(c.gridX * 0.5 + time * 0.8)), 8), 
+                        Math.pow(Math.abs(Math.cos(c.gridZ * 0.5 - time * 0.8)), 8)
+                    );
+                    
+                    let targetH = 1.0 + wallPattern * 3.0; 
+                    tempGridColor.copy(emissiveDark);
+
+                    if (c.isPath) {
+                        targetH = THREE.MathUtils.lerp(1.0 + wallPattern * 0.2, 0.5, flatP);
+                        tempGridColor.lerpColors(emissiveDark, emissivePink, 0.8); // Persistent path color
+                    } else {
+                        targetH = THREE.MathUtils.lerp(targetH, 1.5, flatP);
+                        
+                        if (c.distToPath <= 3.0) {
+                            const pathGlow = Math.max(0, 1 - (c.distToPath / 3.0)) * 0.45;
+                            tempGridColor.lerpColors(emissiveDark, emissivePink, pathGlow); // Persistent edge glow
+                        }
+                    }
+
+                    const ballLocalX = ball.position.x - gridGroup.position.x;
+                    const ballLocalZ = ball.position.z - gridGroup.position.z;
+                    const dx = c.mesh.position.x - ballLocalX;
+                    const dz = c.mesh.position.z - ballLocalZ;
+                    const distToBall = Math.sqrt(dx*dx + dz*dz);
+
+                    if (distToBall < 3.5) {
+                        const glowIntensity = Math.max(0, 1 - (distToBall / 3.5)) * 0.8;
+                        tempGlowColor.copy(baseGlowColor).multiplyScalar(glowIntensity);
+                        tempGridColor.add(tempGlowColor); 
+                    }
+
+                    c.mesh.material.emissive.copy(tempGridColor);
+                    c.mesh.scale.set(1, targetH, 1);
+                    c.mesh.position.y = targetH / 2;
+                    c.currentHeight = targetH;
+                });
+
+                const idx = Math.floor(currentBallProgress);
+                const f = currentBallProgress - idx;
+                
+                const p1 = worldPath[idx];
+                const p2 = worldPath[Math.min(idx + 1, worldPath.length - 1)];
+                tempVec3.lerpVectors(p1, p2, f);
+                
+                let tx = tempVec3.x;
+                let tz = tempVec3.z;
+
+                if (isFalling) {
+                    tx += fallDir.x * (fallT * 5); // Fall horizontally
+                    tz += fallDir.z * (fallT * 5);
+                }
+
+                const bdx = tx - ball.position.x;
+                const bdz = tz - ball.position.z;
+                
+                ball.rotation.x += bdz * 0.15;
+                ball.rotation.z -= bdx * 0.15;
+
+                ball.position.x += bdx * 0.2;
+                ball.position.z += bdz * 0.2;
+
+                let targetY = 0;
+                
+                if (isFalling) {
+                    targetY = gridGroup.position.y - (fallT * fallT * 15); // Gravity acceleration
+                    ball.position.y += (targetY - ball.position.y) * 0.5; // Fast follow
+                } else {
+                    const cB = cubes.find(c => 
+                        c.gridX === Math.round((ball.position.x + offset) / spacing) && 
+                        c.gridZ === Math.round((ball.position.z + offset) / spacing)
+                    );
+                    const groundH = cB ? cB.currentHeight : 0.5;
+                    targetY = groundH + ballRadius + gridGroup.position.y;
+                    ball.position.y += (targetY - ball.position.y) * 0.25;
+                }
+
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+        }
+
+        // ==========================================
+        // Phase 1 Visual: Clean Pyramid Structure
+        // ==========================================
+        function createPyramidVisual(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const camX = parseFloat(container.getAttribute('data-cam-x')) || 24;
+            const camY = parseFloat(container.getAttribute('data-cam-y')) || 26;
+            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 24;
+
+            const scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x000000, 0.015);
+
+            const camera = new THREE.PerspectiveCamera(25, container.clientWidth / container.clientHeight, 1, 1000);
+            camera.position.set(camX, camY, camZ);
+            camera.lookAt(0, 0, 0);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+            scene.add(ambientLight);
+            
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.6); 
+            dirLight.position.set(30, 60, -10);
+            dirLight.castShadow = true;
+            scene.add(dirLight);
+
+            const heroSpotlight = new THREE.SpotLight(0xffffff, 1.5); 
+            heroSpotlight.position.set(0, 20, 0); 
+            scene.add(heroSpotlight); 
+            scene.add(heroSpotlight.target);
+
+            const gridSize = 21;
+            const cubeSize = 0.67375; 
+            const spacing = 1.0;
+            const offset = (gridSize * spacing) / 2 - (spacing / 2);
+            
+            const cubes = [];
+            const gridGroup = new THREE.Group();
+            scene.add(gridGroup);
+            const geometry = new THREE.RoundedBoxGeometry(cubeSize, cubeSize, cubeSize, 3, 0.03);
+            
+            const colors = [];
+            const posAttribute = geometry.attributes.position;
+            const colorDark = new THREE.Color(0x1a1a1a); 
+            const colorLight = new THREE.Color(0xdadada); 
+
+            for (let i = 0; i < posAttribute.count; i++) {
+                const y = posAttribute.getY(i);
+                const t = (y + cubeSize / 2) / cubeSize;
+                const c = colorDark.clone().lerp(colorLight, t);
+                colors.push(c.r, c.g, c.b);
+            }
+            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+            const baseMaterial = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.2, metalness: 0.4 });
+
+            for (let x = 0; x < gridSize; x++) {
+                for (let z = 0; z < gridSize; z++) {
+                    const material = baseMaterial.clone(); 
+                    const mesh = new THREE.Mesh(geometry, material);
+                    const posX = (x * spacing) - offset;
+                    const posZ = (z * spacing) - offset;
+                    mesh.position.set(posX, 0, posZ);
+                    mesh.castShadow = true; mesh.receiveShadow = true;
+                    cubes.push({ mesh, gridX: x, gridZ: z, currentHeight: 0.5 });
+                    gridGroup.add(mesh);
+                }
+            }
+
+            const emissiveDark = new THREE.Color(0x000000); 
+            const colorGrayBase = new THREE.Color(0x3a3a3a).multiplyScalar(0.25); 
+            const colorPinkAccent = new THREE.Color(0xff285a).multiplyScalar(0.4);
+
+            // Define Path for the Orbiting Ball (Outer edge of the pink tier)
+            const pathCoords = [];
+            for (let x = 5; x <= 15; x++) pathCoords.push({x: x, z: 5});
+            for (let z = 6; z <= 15; z++) pathCoords.push({x: 15, z: z});
+            for (let x = 14; x >= 5; x--) pathCoords.push({x: x, z: 15});
+            for (let z = 14; z >= 6; z--) pathCoords.push({x: 5, z: z});
+            
+            const worldPath = pathCoords.map(p => new THREE.Vector3((p.x * spacing) - offset, 0, (p.z * spacing) - offset));
+
+            // Create the Pink Ball
+            const ballRadius = 0.50; 
+            const ballMat = new THREE.MeshStandardMaterial({ 
+                color: 0xff285a, 
+                roughness: 0.1, 
+                metalness: 0.6, 
+                emissive: 0xff285a, 
+                emissiveIntensity: 0.8 
+            });
+            const ball = new THREE.Mesh(new THREE.SphereGeometry(ballRadius, 32, 32), ballMat);
+            ball.castShadow = true; 
+            ball.receiveShadow = true;
+            
+            const ballLight = new THREE.PointLight(0xff285a, 1.2, 8); 
+            ball.add(ballLight); 
+            gridGroup.add(ball); // Add to gridGroup so it rotates with the pyramid
+
+            ball.position.set(worldPath[0].x, 0, worldPath[0].z);
+
+            const clock = new THREE.Clock(); 
+
+            window.addEventListener('resize', () => {
+                if(!container) return;
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
 
             function animate() {
-
                 requestAnimationFrame(animate);
-
                 
+                const rect = container.getBoundingClientRect();
+                if (rect.bottom < 0 || rect.top > window.innerHeight) return;
 
                 const time = clock.getElapsedTime();
 
-                controls.update();
-
-
-
-                // Gentle spotlight motion
-
-                heroSpotlight.position.x = Math.sin(time * 0.5) * 14;
-
-                heroSpotlight.position.y = 20 + Math.sin(time * 0.8) * 2;
-
-                heroSpotlight.position.z = Math.cos(time * 0.3) * 14;
-
-                heroSpotlight.target.position.set(Math.sin(time * 0.5 + 0.5) * 8, 0, Math.cos(time * 0.3 + 0.5) * 8);
-
-
-
-                // --- 15 Second Animation Cycle ---
-
-                const cycleTime = time % 15;
-
-                let flatP = 0; // 0 = Maze Up, 1 = Maze Collapsed to Path
-
-                
-
-                if (cycleTime >= 2 && cycleTime < 4) {
-
-                    flatP = (cycleTime - 2) / 2; // Collapse down
-
-                } else if (cycleTime >= 4 && cycleTime < 12) {
-
-                    flatP = 1; // Stay flat
-
-                } else if (cycleTime >= 12 && cycleTime < 14) {
-
-                    flatP = 1 - ((cycleTime - 12) / 2); // Rise back up
-
-                }
-
-                
-
-                // Smooth easing for the wall flattening
-
-                flatP = flatP * flatP * (3 - 2 * flatP); 
-
-
-
-                // --- Ball Target Calculation ---
-
-                let ballTargetIdx = 0;
-
-                if (cycleTime >= 4.5 && cycleTime < 10) {
-
-                    let t = (cycleTime - 4.5) / 5.5;
-
-                    // Smooth start and stop for the ball roll
-
-                    t = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-
-                    ballTargetIdx = t * (worldPath.length - 1);
-
-                } else if (cycleTime >= 10 && cycleTime < 14.5) {
-
-                    ballTargetIdx = worldPath.length - 1;
-
-                }
-
-
-
-                // Snap ball to start seamlessly when hidden by walls
-
-                if (cycleTime > 14.5 && cycleTime < 14.8) {
-
-                    currentBallProgress = 0;
-
-                    ballTargetIdx = 0;
-
-                    ball.position.x = worldPath[0].x;
-
-                    ball.position.z = worldPath[0].z;
-
-                } else {
-
-                    currentBallProgress += (ballTargetIdx - currentBallProgress) * 0.05;
-
-                }
-
-
-
-                // 1. Update Grid/Maze Heights and Colors
+                heroSpotlight.position.x = gridGroup.position.x + Math.sin(time * 0.5) * 14;
+                heroSpotlight.position.y = gridGroup.position.y + 20;
+                heroSpotlight.position.z = gridGroup.position.z + Math.cos(time * 0.3) * 14;
+                heroSpotlight.target.position.set(gridGroup.position.x + Math.sin(time * 0.5 + 0.5) * 8, gridGroup.position.y, gridGroup.position.z + Math.cos(time * 0.3 + 0.5) * 8);
 
                 cubes.forEach(c => {
-
-                    // Generative undulating pattern for the walls
-
-                    const wallPattern = Math.max(
-
-                        Math.pow(Math.abs(Math.sin(c.gridX * 0.5 + time * 0.8)), 8), 
-
-                        Math.pow(Math.abs(Math.cos(c.gridZ * 0.5 - time * 0.8)), 8)
-
-                    );
-
+                    let d = Math.max(Math.abs(c.gridX - 10), Math.abs(c.gridZ - 10)); // Distance from center
                     
+                    let pHeight = 0.5;
+                    c.mesh.material.emissive.copy(emissiveDark);
 
-                    let targetH = 1.0 + wallPattern * 3.0; // Base tall maze height
-
-                    tempGridColor.copy(emissiveDark);
-
-
-
-                    if (c.isPath) {
-
-                        // The path cells drop lower (to 0.5) to become the road
-
-                        targetH = THREE.MathUtils.lerp(1.0 + wallPattern * 0.2, 0.5, flatP);
-
-                        // The path softly lights up as it reveals itself
-
-                        tempGridColor.lerpColors(emissiveDark, emissivePink, flatP * 0.8);
-
-                    } else {
-
-                        // The surrounding walls shrink to 1.5 to act as "bumpers/guard rails"
-
-                        targetH = THREE.MathUtils.lerp(targetH, 1.5, flatP);
-
-                        
-
-                        // Walls emit a glow based on proximity to the path
-
-                        if (c.distToPath <= 3.0) {
-
-                            const pathGlow = Math.max(0, 1 - (c.distToPath / 3.0)) * 0.45 * flatP;
-
-                            tempGridColor.lerpColors(emissiveDark, emissivePink, pathGlow);
-
-                        }
-
-                    }
-
-
-
-                    // Hovering Light Effect: Make cubes directly beneath the ball glow dynamically
-
-                    const ballLocalX = ball.position.x - gridGroup.position.x;
-
-                    const ballLocalZ = ball.position.z - gridGroup.position.z;
-
-                    const dx = c.mesh.position.x - ballLocalX;
-
-                    const dz = c.mesh.position.z - ballLocalZ;
-
-                    const distToBall = Math.sqrt(dx*dx + dz*dz);
-
-
-
-                    if (distToBall < 3.5 && flatP > 0) {
-
-                        const glowIntensity = Math.max(0, 1 - (distToBall / 3.5)) * 0.8;
-
-                        tempGlowColor.copy(baseGlowColor).multiplyScalar(glowIntensity);
-
-                        tempGridColor.add(tempGlowColor); // Overlay hovering light onto grid
-
-                    }
-
-
-
-                    c.mesh.material.emissive.copy(tempGridColor);
-
-                    c.mesh.scale.set(1, targetH, 1);
-
-                    c.mesh.position.y = targetH / 2;
-
-                    c.currentHeight = targetH;
-
+                    if (d <= 5) { pHeight = 1.5; c.mesh.material.emissive.copy(colorPinkAccent); }
+                    if (d <= 3) { pHeight = 3.0; c.mesh.material.emissive.copy(colorGrayBase); }
+                    if (d <= 1) { pHeight = 4.5; c.mesh.material.emissive.copy(colorGrayBase); }
+                    
+                    const h = Math.max(0.001, pHeight);
+                    c.mesh.scale.setScalar(1.0);
+                    c.mesh.scale.y = h;
+                    c.mesh.position.y = h / 2;
+                    c.currentHeight = h;
                 });
 
-
-
-                // 2. Update Bouncing/Rolling Ball logic
-
-                const idx = Math.floor(currentBallProgress);
-
-                const f = currentBallProgress - idx;
-
+                // Ball Animation Logic
+                const speed = 4.0; 
+                let pathProgress = (time * speed) % worldPath.length;
+                let idx = Math.floor(pathProgress);
+                let weight = pathProgress - idx;
                 
-
-                // Interpolate exact position on the path
-
-                const p1 = worldPath[idx];
-
-                const p2 = worldPath[Math.min(idx + 1, worldPath.length - 1)];
-
-                tempVec3.lerpVectors(p1, p2, f);
-
+                let currentPos = worldPath[idx];
+                let nextPos = worldPath[(idx + 1) % worldPath.length];
                 
-
-                const tx = tempVec3.x;
-
-                const tz = tempVec3.z;
-
-
-
-                // Calculate momentum deltas to drive rolling rotation
+                let tx = THREE.MathUtils.lerp(currentPos.x, nextPos.x, weight);
+                let tz = THREE.MathUtils.lerp(currentPos.z, nextPos.z, weight);
 
                 const bdx = tx - ball.position.x;
-
                 const bdz = tz - ball.position.z;
-
                 
-
-                // Roll the ball
-
                 ball.rotation.x += bdz * 0.15;
-
                 ball.rotation.z -= bdx * 0.15;
 
-
-
-                // Move ball horizontally
-
                 ball.position.x += bdx * 0.2;
-
                 ball.position.z += bdz * 0.2;
 
-
-
-                // Dynamically find the height of the cube directly beneath the ball to sit on
-
                 const cB = cubes.find(c => 
-
                     c.gridX === Math.round((ball.position.x + offset) / spacing) && 
-
                     c.gridZ === Math.round((ball.position.z + offset) / spacing)
-
                 );
-
                 
-
-                const groundH = cB ? cB.currentHeight : 0.5;
-
-                const targetY = groundH + ballRadius + gridGroup.position.y;
-
+                const groundH = cB ? cB.currentHeight : 1.5;
+                const targetY = groundH + ballRadius; 
                 
-
-                // Smoothly interpolate ball to target Y (allows it to ride the waves naturally)
-
                 ball.position.y += (targetY - ball.position.y) * 0.25;
 
-
-
-                // Render Scene
+                gridGroup.rotation.y = Math.sin(time * 0.1) * 0.15;
 
                 renderer.render(scene, camera);
+            }
+            
+            animate();
+        }
 
+        // ==========================================
+        // Phase 2 Visual: Algorithmic Bias Nodes
+        // ==========================================
+        function createNodesVisual(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const camX = parseFloat(container.getAttribute('data-cam-x')) || 24;
+            const camY = parseFloat(container.getAttribute('data-cam-y')) || 26;
+            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 24;
+
+            const scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x000000, 0.015);
+
+            const camera = new THREE.PerspectiveCamera(25, container.clientWidth / container.clientHeight, 1, 1000);
+            camera.position.set(camX, camY, camZ);
+            camera.lookAt(0, 0, 0);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.maxPolarAngle = Math.PI / 2 - 0.05;
+            controls.minDistance = 15;
+            controls.maxDistance = 80;
+            controls.enableZoom = false; 
+            controls.target.set(0, -2, 0);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+            scene.add(ambientLight);
+            
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
+            dirLight.position.set(30, 60, -10);
+            dirLight.castShadow = true;
+            dirLight.shadow.mapSize.width = 1024;
+            dirLight.shadow.mapSize.height = 1024;
+            scene.add(dirLight);
+
+            const heroSpotlight = new THREE.SpotLight(0xffffff, 1.5); 
+            heroSpotlight.position.set(0, 20, 0); 
+            heroSpotlight.angle = Math.PI / 4;
+            heroSpotlight.penumbra = 0.5;
+            scene.add(heroSpotlight); 
+            scene.add(heroSpotlight.target);
+
+            const emissiveDark = new THREE.Color(0x000000); 
+            const emissivePink = new THREE.Color(0xff285a).multiplyScalar(1.2); 
+            const colorPinkAccent = new THREE.Color(0xff285a).multiplyScalar(0.4);
+            const tempNodeColor = new THREE.Color();
+
+            const gridSize = 21;
+            const cubeSize = 0.67375; 
+            const spacing = 1.0;
+            const offset = (gridSize * spacing) / 2 - (spacing / 2);
+            
+            const cubes = [];
+            const gridGroup = new THREE.Group();
+            gridGroup.position.set(0, -2, 0); 
+            scene.add(gridGroup);
+            
+            const geometry = new THREE.RoundedBoxGeometry(cubeSize, cubeSize, cubeSize, 3, 0.03);
+            const colors = [];
+            const posAttribute = geometry.attributes.position;
+            const colorDark = new THREE.Color(0x1a1a1a); 
+            const colorLight = new THREE.Color(0xdadada); 
+
+            for (let i = 0; i < posAttribute.count; i++) {
+                const y = posAttribute.getY(i);
+                const t = (y + cubeSize / 2) / cubeSize;
+                const c = colorDark.clone().lerp(colorLight, t);
+                colors.push(c.r, c.g, c.b);
+            }
+            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+            const baseMaterial = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.2, metalness: 0.4 });
+
+            for (let x = 0; x < gridSize; x++) {
+                for (let z = 0; z < gridSize; z++) {
+                    const material = baseMaterial.clone(); 
+                    const mesh = new THREE.Mesh(geometry, material);
+                    const posX = (x * spacing) - offset;
+                    const posZ = (z * spacing) - offset;
+                    mesh.position.set(posX, 0, posZ);
+                    mesh.castShadow = true; 
+                    mesh.receiveShadow = true;
+                    cubes.push({ mesh, gridX: x, gridZ: z, currentHeight: 0.5 });
+                    gridGroup.add(mesh);
+                }
             }
 
+            const nodes = [
+                {x: 4, z: 4, h: 4}, {x: 8, z: 3, h: 6}, {x: 14, z: 5, h: 3}, 
+                {x: 3, z: 10, h: 5}, {x: 9, z: 11, h: 4}, {x: 15, z: 12, h: 5}, 
+                {x: 5, z: 16, h: 3}, {x: 11, z: 17, h: 6}, {x: 16, z: 16, h: 4}, 
+                {x: 7, z: 8, h: 5}, {x: 12, z: 7, h: 4}, {x: 10, z: 14, h: 5}
+            ];
             
+            const edges = [
+                [0,3], [3,9], [9,11], [11,7], [7,5], [5,2], [2,10], 
+                [10,1], [1,4], [4,8], [8,6], [6,0], [3,6], [9,4], [11,8], [1,10]
+            ];
+            
+            const lineGeo = new THREE.BufferGeometry();
+            const linePositions = new Float32Array(edges.length * 6);
+            lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+            
+            const lineMat = new THREE.LineBasicMaterial({ 
+                color: 0xff285a, 
+                transparent: true, 
+                opacity: 0.8,
+                linewidth: 2 
+            });
+            const linesMesh = new THREE.LineSegments(lineGeo, lineMat);
+            gridGroup.add(linesMesh);
 
-            // Start Loop
+            const ballRadius = 0.50; 
+            const ballMat = new THREE.MeshStandardMaterial({ 
+                color: 0xff285a, 
+                roughness: 0.1, 
+                metalness: 0.6, 
+                emissive: 0xff285a, 
+                emissiveIntensity: 0.8 
+            });
+            const ball = new THREE.Mesh(new THREE.SphereGeometry(ballRadius, 32, 32), ballMat);
+            ball.castShadow = true; 
+            ball.receiveShadow = true;
+            
+            const ballLight = new THREE.PointLight(0xff285a, 1.2, 8); 
+            ball.add(ballLight); 
+            scene.add(ball);
 
+            const ballNodePath = [0, 3, 9, 11, 7, 5, 2, 1, 4, 8, 10, 6]; 
+
+            const clock = new THREE.Clock();
+            let tx = 0, tz = 0, arc = 0;
+
+            window.addEventListener('resize', () => {
+                if(!container) return;
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                const rect = container.getBoundingClientRect();
+                if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+                const time = clock.getElapsedTime();
+                controls.update();
+
+                heroSpotlight.position.x = Math.sin(time * 0.5) * 14;
+                heroSpotlight.position.z = Math.cos(time * 0.3) * 14;
+                heroSpotlight.target.position.set(Math.sin(time * 0.5 + 0.5) * 8, 0, Math.cos(time * 0.3 + 0.5) * 8);
+
+                cubes.forEach(c => {
+                    let targetH = 0.5;
+                    let targetColor = emissiveDark;
+
+                    const nIdx = nodes.findIndex(n => n.x === c.gridX && n.z === c.gridZ);
+                    
+                    if (nIdx !== -1) {
+                        targetH = nodes[nIdx].h + Math.sin(time * 2 + nIdx) * 0.4;
+                        tempNodeColor.lerpColors(colorPinkAccent, emissivePink, 0.5 + Math.sin(time * 2 + nIdx) * 0.5);
+                        targetColor = tempNodeColor;
+                    }
+
+                    c.mesh.material.emissive.copy(targetColor);
+                    c.mesh.scale.set(1, targetH, 1);
+                    c.mesh.position.y = targetH / 2;
+                    c.currentHeight = targetH;
+                });
+
+                linesMesh.material.opacity = 0.3 + Math.sin(time * 3) * 0.3;
+                const pos = linesMesh.geometry.attributes.position.array; 
+                let idx = 0;
+                
+                edges.forEach(e => {
+                    const n1 = nodes[e[0]]; 
+                    const n2 = nodes[e[1]];
+                    const c1 = cubes.find(c => c.gridX === n1.x && c.gridZ === n1.z); 
+                    const c2 = cubes.find(c => c.gridX === n2.x && c.gridZ === n2.z);
+                    
+                    pos[idx++] = (n1.x * spacing) - offset; 
+                    pos[idx++] = c1 ? c1.currentHeight : 0.5; 
+                    pos[idx++] = (n1.z * spacing) - offset;
+                    
+                    pos[idx++] = (n2.x * spacing) - offset; 
+                    pos[idx++] = c2 ? c2.currentHeight : 0.5; 
+                    pos[idx++] = (n2.z * spacing) - offset;
+                });
+                linesMesh.geometry.attributes.position.needsUpdate = true;
+
+                const jumpTime = (time * 1.2); 
+                const jumpIdx = Math.floor(jumpTime) % ballNodePath.length;
+                const nextJumpIdx = (jumpIdx + 1) % ballNodePath.length;
+                
+                let jumpFrac = jumpTime % 1;
+                let easeFrac = clamp((jumpFrac - 0.2) / 0.6, 0, 1);
+                easeFrac = easeFrac * easeFrac * (3 - 2 * easeFrac); 
+                
+                const n1 = nodes[ballNodePath[jumpIdx]]; 
+                const n2 = nodes[ballNodePath[nextJumpIdx]];
+                
+                const lx = THREE.MathUtils.lerp(n1.x, n2.x, easeFrac); 
+                const lz = THREE.MathUtils.lerp(n1.z, n2.z, easeFrac);
+                tx = (lx * spacing) - offset + gridGroup.position.x; 
+                tz = (lz * spacing) - offset + gridGroup.position.z;
+                
+                ball.rotation.x += (n2.z - n1.z) * (jumpFrac * 0.02); 
+                ball.rotation.z -= (n2.x - n1.x) * (jumpFrac * 0.02);
+                
+                arc = Math.sin(easeFrac * Math.PI) * 2.5; 
+
+                ball.position.x += (tx - ball.position.x) * 0.2; 
+                ball.position.z += (tz - ball.position.z) * 0.2;
+
+                const cB = cubes.find(c => 
+                    c.gridX === Math.round((ball.position.x - gridGroup.position.x + offset) / spacing) && 
+                    c.gridZ === Math.round((ball.position.z - gridGroup.position.z + offset) / spacing)
+                );
+                
+                const groundH = cB ? cB.currentHeight : 0.5;
+                const targetY = groundH + ballRadius + gridGroup.position.y + arc;
+                
+                ball.position.y += (targetY - ball.position.y) * 0.25;
+
+                renderer.render(scene, camera);
+            }
+            
             animate();
+        }
 
-        };
+        // ==========================================
+        // Phase 3 Visual: AI Capability Stairs
+        // ==========================================
+        function createStairsVisual(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
 
+            const camX = parseFloat(container.getAttribute('data-cam-x')) || 24;
+            const camY = parseFloat(container.getAttribute('data-cam-y')) || 26;
+            const camZ = parseFloat(container.getAttribute('data-cam-z')) || 24;
+
+            const scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x000000, 0.015);
+
+            const camera = new THREE.PerspectiveCamera(25, container.clientWidth / container.clientHeight, 1, 1000);
+            camera.position.set(camX, camY, camZ);
+            camera.lookAt(0, 0, 0);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.maxPolarAngle = Math.PI / 2 - 0.05; 
+            controls.minDistance = 15;
+            controls.maxDistance = 80;
+            controls.enableZoom = false; 
+            controls.target.set(0, -2, 0);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+            scene.add(ambientLight);
+            
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
+            dirLight.position.set(30, 60, -10);
+            dirLight.castShadow = true;
+            dirLight.shadow.mapSize.width = 2048;
+            dirLight.shadow.mapSize.height = 2048;
+            scene.add(dirLight);
+
+            const heroSpotlight = new THREE.SpotLight(0xffffff, 1.5); 
+            heroSpotlight.position.set(0, 20, 0); 
+            heroSpotlight.angle = Math.PI / 4;
+            heroSpotlight.penumbra = 0.5;
+            scene.add(heroSpotlight); 
+            scene.add(heroSpotlight.target);
+
+            const emissiveDark = new THREE.Color(0x000000); 
+            const colorPinkAccent = new THREE.Color(0xff285a).multiplyScalar(0.4);
+            const colorWhite = new THREE.Color(0xffffff).multiplyScalar(0.6);
+            
+            const tempStairColor = new THREE.Color();
+            const tempGridColor = new THREE.Color();
+            const baseGlowColor = new THREE.Color(0xff285a);
+            const tempGlowColor = new THREE.Color();
+            
+            const stairTargetColors = []; 
+            for(let i=0; i<=8; i++) {
+                stairTargetColors.push(new THREE.Color().lerpColors(colorPinkAccent, colorWhite, i / 8));
+            }
+
+            const gridSize = 21;
+            const cubeSize = 0.67375; 
+            const spacing = 1.0;
+            const offset = (gridSize * spacing) / 2 - (spacing / 2);
+            
+            const cubes = [];
+            const gridGroup = new THREE.Group();
+            gridGroup.position.set(0, -2, 0); 
+            scene.add(gridGroup);
+            
+            const geometry = new THREE.RoundedBoxGeometry(cubeSize, cubeSize, cubeSize, 3, 0.03);
+            const colors = [];
+            const posAttribute = geometry.attributes.position;
+            const colorDark = new THREE.Color(0x1a1a1a); 
+            const colorLight = new THREE.Color(0xdadada); 
+
+            for (let i = 0; i < posAttribute.count; i++) {
+                const y = posAttribute.getY(i);
+                const t = (y + cubeSize / 2) / cubeSize;
+                const c = colorDark.clone().lerp(colorLight, t);
+                colors.push(c.r, c.g, c.b);
+            }
+            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+            const baseMaterial = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.2, metalness: 0.4 });
+
+            for (let x = 0; x < gridSize; x++) {
+                for (let z = 0; z < gridSize; z++) {
+                    const material = baseMaterial.clone(); 
+                    const mesh = new THREE.Mesh(geometry, material);
+                    const posX = (x * spacing) - offset;
+                    const posZ = (z * spacing) - offset;
+                    mesh.position.set(posX, 0, posZ);
+                    mesh.castShadow = true; 
+                    mesh.receiveShadow = true;
+                    cubes.push({ mesh, gridX: x, gridZ: z, currentHeight: 0.5 });
+                    gridGroup.add(mesh);
+                }
+            }
+
+            const stairsA = []; 
+            for(let i=0; i<=8; i++) stairsA.push({x: 5+i, z: 13-i, h: 1.0 + i*0.6, seg: 'A', idx: i});
+            
+            const stairsB = []; 
+            for(let i=0; i<=8; i++) stairsB.push({x: 11-i, z: 7+i, h: 1.0 + i*0.6, seg: 'B', idx: i});
+
+            const ballRadius = 0.50; 
+            const ballMat = new THREE.MeshStandardMaterial({ 
+                color: 0xff285a, 
+                roughness: 0.1, 
+                metalness: 0.6, 
+                emissive: 0xff285a, 
+                emissiveIntensity: 0.8 
+            });
+            const ball = new THREE.Mesh(new THREE.SphereGeometry(ballRadius, 32, 32), ballMat);
+            ball.castShadow = true; 
+            ball.receiveShadow = true;
+            
+            const ballLight = new THREE.PointLight(0xff285a, 1.2, 8); 
+            ball.add(ballLight); 
+            scene.add(ball);
+
+            const clock = new THREE.Clock();
+            let phase5BallTime = 0;
+
+            window.addEventListener('resize', () => {
+                if(!container) return;
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                const rect = container.getBoundingClientRect();
+                if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+                const delta = clamp(clock.getDelta(), 0, 0.1); 
+                const time = clock.getElapsedTime();
+                controls.update();
+
+                heroSpotlight.position.x = Math.sin(time * 0.5) * 14;
+                heroSpotlight.position.y = 20 + Math.sin(time * 0.8) * 2;
+                heroSpotlight.position.z = Math.cos(time * 0.3) * 14;
+                heroSpotlight.target.position.set(Math.sin(time * 0.5 + 0.5) * 8, 0, Math.cos(time * 0.3 + 0.5) * 8);
+
+                phase5BallTime += delta * 4; 
+                let lp = phase5BallTime % 20;
+
+                cubes.forEach(c => {
+                    let targetH = 0.5;
+                    tempGridColor.copy(emissiveDark); 
+                    
+                    const sDef = stairsA.find(s => s.x === c.gridX && s.z === c.gridZ) || stairsB.find(s => s.x === c.gridX && s.z === c.gridZ);
+                    
+                    if (sDef) {
+                        if (sDef.seg === 'A') {
+                            targetH = lp < 10 
+                                ? 0.5 + (sDef.h - 0.5) * clamp(lp - sDef.idx + 2, 0, 1) 
+                                : sDef.h - (sDef.h - 0.5) * clamp(lp - 10 - sDef.idx * 0.2, 0, 1);
+                        } else {
+                            targetH = lp >= 10 
+                                ? 0.5 + (sDef.h - 0.5) * clamp(lp - 10 - sDef.idx + 2, 0, 1) 
+                                : sDef.h - (sDef.h - 0.5) * clamp(lp - sDef.idx * 0.2, 0, 1);
+                        }
+                        
+                        tempStairColor.lerpColors(emissiveDark, stairTargetColors[sDef.idx], clamp((targetH - 0.5) / (sDef.h - 0.5), 0, 1));
+                        
+                        if (targetH > 0.5) {
+                            tempGridColor.copy(tempStairColor);
+                        }
+                    }
+
+                    const ballLocalX = ball.position.x - gridGroup.position.x;
+                    const ballLocalZ = ball.position.z - gridGroup.position.z;
+                    const dx = c.mesh.position.x - ballLocalX;
+                    const dz = c.mesh.position.z - ballLocalZ;
+                    const distToBall = Math.sqrt(dx*dx + dz*dz);
+
+                    if (distToBall < 3.5) {
+                        const glowIntensity = Math.max(0, 1 - (distToBall / 3.5)) * 0.8;
+                        tempGlowColor.copy(baseGlowColor).multiplyScalar(glowIntensity);
+                        tempGridColor.add(tempGlowColor); 
+                    }
+
+                    c.mesh.material.emissive.copy(tempGridColor);
+                    c.mesh.scale.set(1, targetH, 1);
+                    c.mesh.position.y = targetH / 2;
+                    c.currentHeight = targetH;
+                });
+
+                let lx = 0, lz = 0, arc = 0;
+                
+                if (lp < 8) { 
+                    let idx = Math.floor(lp); 
+                    lx = THREE.MathUtils.lerp(stairsA[idx].x, stairsA[idx+1].x, lp-idx); 
+                    lz = THREE.MathUtils.lerp(stairsA[idx].z, stairsA[idx+1].z, lp-idx); 
+                } 
+                else if (lp < 10) { 
+                    let f = (lp-8)/2; 
+                    lx = THREE.MathUtils.lerp(stairsA[8].x, stairsB[0].x, f); 
+                    lz = THREE.MathUtils.lerp(stairsA[8].z, stairsB[0].z, f); 
+                    
+                    let easeFrac = f * f * (3 - 2 * f); 
+                    arc = Math.sin(easeFrac * Math.PI) * 4.0;
+                    
+                    ball.rotation.x += (stairsB[0].z - stairsA[8].z) * 0.05;
+                    ball.rotation.z -= (stairsB[0].x - stairsA[8].x) * 0.05;
+                } 
+                else if (lp < 18) { 
+                    let idx = Math.floor(lp-10); 
+                    lx = THREE.MathUtils.lerp(stairsB[idx].x, stairsB[idx+1].x, lp-10-idx); 
+                    lz = THREE.MathUtils.lerp(stairsB[idx].z, stairsB[idx+1].z, lp-10-idx); 
+                } 
+                else { 
+                    let f = (lp-18)/2; 
+                    lx = THREE.MathUtils.lerp(stairsB[8].x, stairsA[0].x, f); 
+                    lz = THREE.MathUtils.lerp(stairsB[8].z, stairsA[0].z, f); 
+                    
+                    let easeFrac = f * f * (3 - 2 * f);
+                    arc = Math.sin(easeFrac * Math.PI) * 4.0;
+                    
+                    ball.rotation.x += (stairsA[0].z - stairsB[8].z) * 0.05;
+                    ball.rotation.z -= (stairsA[0].x - stairsB[8].x) * 0.05;
+                }
+
+                const tx = (lx * spacing) - offset + gridGroup.position.x; 
+                const tz = (lz * spacing) - offset + gridGroup.position.z;
+
+                ball.position.x += (tx - ball.position.x) * 0.25; 
+                ball.position.z += (tz - ball.position.z) * 0.25;
+
+                const cB = cubes.find(c => 
+                    c.gridX === Math.round((ball.position.x - gridGroup.position.x + offset) / spacing) && 
+                    c.gridZ === Math.round((ball.position.z - gridGroup.position.z + offset) / spacing)
+                );
+                
+                const groundH = cB ? cB.currentHeight : 0.5;
+                const targetY = groundH + ballRadius + gridGroup.position.y + arc;
+                
+                ball.position.y += (targetY - ball.position.y) * 0.25;
+
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+        }
+
+        // Initialize all 3D visuals
+        window.addEventListener('load', function() {
+            createLabyrinthVisual('labyrinth-canvas');
+            createPyramidVisual('pyramid-canvas-phase1');
+            createNodesVisual('nodes-canvas-phase2');
+            createStairsVisual('stairs-canvas-phase3');
+        });
     </script>
-
 </body>
-
 </html>
-
-Gemini said
-You said
-Zoom the the labyrinth a lot so it's very prominent in the hero section. When the cubes are moving up and down, they should retain the same colours as the ones applied when they are all down to reveal the path.
-
-Gemini said
-Here are the changes to zoom in on the labyrinth and keep the glowing path colours permanently visible on the walls, even as they undulate.
-
-You said
-Centre the heading and subheading of the strategic alignment section. Remove the arrow under the explore proposal button. Remove the two select buttons from commercial options. Remove the contact details section from the bottom of the page. Keep the Request Next Steps Button. When the user click it, they should be able to email hayder@axiaorigin.com.
-
-Gemini said
-I've implemented all the requested changes to the proposal layout. The strategic alignment heading is now centered, the form has been removed in favor of a direct email button, the commercial select buttons have been removed, and the scroll arrow has been cleared out.
-
-Here are the updates to your code:
-
-You said
-In the Immediate Opportunities section, zoom in on the grid visuals so they are all the same size. I'd like them to never overlap the inner timeline or cards. For visual next to number 1, I don;;t want the edges to be cropped. I want the visuals to be as big as possible while maintaining order on the page.
-
-Gemini said
-I've adjusted the camera distances so all three timeline visuals have a standardized, closer zoom, making them significantly more prominent. I also increased their container heights (from 350px to 450px) and adjusted the fade-out mask so the edges of the Phase 1 pyramid are completely visible without getting cropped.
-
-Here are the updates to apply to index.html:
-
-You said
-For the labyrinth visual in the hero section, when the balls reached the end of the path, make it drop off the edge.
-
-
-
-Here is a logo link for the Axia logo in the top left corner. https://github.com/karolina-afk/AO-brand-assets-/blob/main/Axia_Origin_W_RGB_72dpii%20(4).png
-
-
-
-Can you use black colour instead of navy for the background. Amplify the pink shadowing a little bit.
-
-
-
-On the timeline, can you slightly gray out the sections that are not in focuse as the user scrolls.
-
-Gemini said
-I have updated the background to pure black, amplified the pink glow effects across the site, and implemented the Axia Origin logo in the top left and footer. I also added the logic for the labyrinth ball to roll off the edge at the end of the path and implemented the gray-out scroll effect for the inactive timeline sections.
-
-Here is the update to index.html:
-
-You said
-For the pyramid grid, can you add a pink ball looping around the pink cubes.
-
-Gemini said
-Here is the code to add the looping pink ball directly to the Pyramid Visual.
-
-I've mapped out a continuous loop that precisely follows the outer edge of the pink-illuminated tier of the pyramid, and animated the ball to roll along it while inheriting the slow rotation of the grid itself.
-
-
-
-
-
-Your Axia Origin chats aren't used to improve our models. Gemini is AI and can make mistakes, including about people. Your privacy and GeminiOpens in a new window
-
-Proposal Website
-
-
-1234567891011121314151617181920212223242526272829303132333435363738394041424344
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EQUI Consulting Proposal | Axia Origin</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
