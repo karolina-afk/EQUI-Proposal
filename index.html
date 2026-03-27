@@ -17,6 +17,9 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/RoundedBoxGeometry.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
+    <!-- GSAP Dependency for Intro Animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
     <!-- Tailwind Configuration -->
     <script>
         tailwind.config = {
@@ -75,6 +78,57 @@
             transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
         }
 
+        /* Intro Sequence Styles */
+        .hero-block {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            font-size: clamp(2rem, 4.5vw, 4.5rem);
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+        }
+        .serif-text {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            color: #ffffff;
+            font-weight: normal;
+        }
+        .line {
+            display: flex;
+            white-space: nowrap;
+        }
+        .not-mask {
+            width: 0;
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+        .word-not {
+            display: inline-block;
+            transform: translateX(-100%);
+        }
+        .word-your, .line-2 {
+            opacity: 0;
+        }
+        .phew-mask {
+            overflow: hidden;
+            padding-top: 0.15em;
+        }
+        .word-phew {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-weight: 800;
+            display: inline-block;
+            transform: translateY(110%);
+            letter-spacing: -0.02em;
+        }
+        .axia-logo {
+            position: absolute;
+            bottom: 1.5cm;
+            left: 1.5cm;
+            width: 260px;
+            height: auto;
+            z-index: 15;
+        }
+
         /* Scrollbar */
         ::-webkit-scrollbar {
             width: 10px;
@@ -115,6 +169,7 @@
         /* Mouse Tracking Glow Effect for Cards */
         .glow-card {
             position: relative;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
         }
         .glow-card::before {
             content: "";
@@ -191,14 +246,64 @@
         .chevron-icon.open {
             transform: rotate(180deg);
         }
+
+        /* Horizontal Expansion for Timeline Cards */
+        @media (min-width: 768px) {
+            .glow-card.expanded-card {
+                width: 85% !important;
+                flex-shrink: 0 !important;
+                z-index: 50 !important;
+                background: rgba(15, 15, 15, 0.95) !important;
+                text-align: left !important;
+                box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8) !important;
+                border-color: rgba(255, 42, 95, 0.4) !important;
+            }
+            /* If card is on the left (Phase 1 & 3), expand across to the right */
+            .glow-card.md\:order-1.expanded-card {
+                margin-right: -43.3333% !important;
+            }
+            /* If card is on the right (Phase 2), expand across to the left */
+            .glow-card.order-3.expanded-card {
+                margin-left: -43.3333% !important;
+            }
+            /* Shift the toggle text alignment back to the left when expanded */
+            .glow-card.expanded-card .justify-end {
+                justify-content: flex-start !important;
+            }
+        }
+        
+        /* Ensure the active row sits above adjacent rows */
+        .timeline-step.is-expanded {
+            z-index: 60;
+        }
     </style>
 </head>
 <body class="antialiased relative">
 
-    <!-- Preloader -->
-    <div id="preloader" class="fixed inset-0 z-[100] bg-dark-900 flex flex-col items-center justify-center">
-        <div class="w-16 h-16 rounded-full border-4 border-white/10 border-t-brand animate-spin mb-6"></div>
-        <div class="text-brand font-bold tracking-[0.2em] uppercase text-sm animate-pulse">Initializing Proposal</div>
+    <!-- Intro Sequence Preloader -->
+    <div id="intro-sequence" class="fixed inset-0 z-[100] bg-dark-900 flex flex-col items-center justify-center overflow-hidden">
+        <div class="hero-block">
+            <!-- Line 1: [Not] your conventional -->
+            <div class="line serif-text">
+                <div class="not-mask">
+                    <span class="word-not">Not&nbsp;</span>
+                </div>
+                <span class="word-your">your conventional</span>
+            </div>
+
+            <!-- Line 2: management consultancy. -->
+            <div class="line line-2 serif-text">
+                management consultancy.
+            </div>
+
+            <!-- Line 3: Phew. -->
+            <div class="line phew-mask mt-4">
+                <span class="word-phew text-brand">Phew.</span>
+            </div>
+        </div>
+
+        <!-- Axia Origin Logo -->
+        <img src="https://raw.githubusercontent.com/karolina-afk/EQ-images-/main/Axia_Origin_W_RGB_72dpii%20(2).png" alt="Axia Origin" class="axia-logo hidden md:block">
     </div>
 
     <!-- Ambient Background Blobs -->
@@ -516,34 +621,8 @@
 
             <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                 
-                <!-- Option 2 (Left side - Basic) -->
-                <div class="glow-card glass p-10 rounded-[2rem] border border-white/10 flex flex-col reveal transition-transform hover:-translate-y-2">
-                    <div class="text-slate-400 font-semibold tracking-wider text-sm mb-2">OPTION 2</div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Algorithmic Bias Report</h3>
-                    <div class="flex items-baseline gap-2 mb-8">
-                        <span class="text-5xl font-extrabold text-white">£35K</span>
-                        <span class="text-slate-400 font-medium">+ VAT</span>
-                    </div>
-                    
-                    <div class="flex-grow">
-                        <p class="text-sm text-brand font-semibold mb-4 uppercase tracking-widest">What's Included</p>
-                        <ul class="space-y-4">
-                            <li class="flex items-start gap-3 text-slate-300">
-                                <svg class="w-6 h-6 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <span>Full analysis and Algorithmic Bias Report</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Option 1 (Right side - Recommended) -->
-                <div class="glow-card bg-gradient-to-br from-dark-700 to-dark-900 p-10 rounded-[2rem] border border-brand/50 relative flex flex-col reveal reveal-delay-1 shadow-[0_0_80px_rgba(255,42,95,0.4)] transform md:-translate-y-4 hover:-translate-y-6 transition-transform">
-                    <div class="absolute top-0 right-8 transform -translate-y-1/2">
-                        <div class="bg-brand text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
-                            Recommended
-                        </div>
-                    </div>
-
+                <!-- Option 1 (Left side) -->
+                <div class="glow-card bg-gradient-to-br from-dark-700 to-dark-900 p-10 rounded-[2rem] border border-brand/50 relative flex flex-col reveal shadow-[0_0_60px_rgba(255,42,95,0.25)] hover:shadow-[0_0_80px_rgba(255,42,95,0.4)] transition-all duration-300 hover:-translate-y-2">
                     <div class="text-brand font-semibold tracking-wider text-sm mb-2">OPTION 1</div>
                     <h3 class="text-2xl font-bold text-white mb-2">Full Transformation</h3>
                     <div class="flex items-baseline gap-2 mb-8">
@@ -564,6 +643,26 @@
                             </li>
                             <li class="flex items-start gap-3 text-slate-200">
                                 <svg class="w-6 h-6 text-brand shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span>Full analysis and Algorithmic Bias Report</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Option 2 (Right side) -->
+                <div class="glow-card bg-gradient-to-br from-dark-700 to-dark-900 p-10 rounded-[2rem] border border-slate-600/50 relative flex flex-col reveal reveal-delay-1 shadow-[0_0_60px_rgba(71,85,105,0.25)] hover:shadow-[0_0_80px_rgba(71,85,105,0.4)] transition-all duration-300 hover:-translate-y-2">
+                    <div class="text-slate-400 font-semibold tracking-wider text-sm mb-2">OPTION 2</div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Algorithmic Bias Report</h3>
+                    <div class="flex items-baseline gap-2 mb-8">
+                        <span class="text-5xl font-extrabold text-white">£35K</span>
+                        <span class="text-slate-400 font-medium">+ VAT</span>
+                    </div>
+                    
+                    <div class="flex-grow">
+                        <p class="text-sm text-slate-400 font-semibold mb-4 uppercase tracking-widest">What's Included</p>
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-3 text-slate-300">
+                                <svg class="w-6 h-6 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 <span>Full analysis and Algorithmic Bias Report</span>
                             </li>
                         </ul>
@@ -652,61 +751,118 @@
 
             <div class="reveal reveal-delay-3 flex justify-center">
                 <a href="mailto:hayder@axiaorigin.com?subject=Next Steps: EQUI Consulting Proposal" class="inline-flex py-4 px-10 rounded-xl bg-brand text-white font-bold hover:shadow-[0_0_40px_rgba(255,42,95,0.8)] transition-all items-center gap-3 text-lg">
-                    Request Next Steps
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    Talk to us
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7-7m7-7H3"></path></svg>
                 </a>
-            </div>
-
-            <div class="mt-24 text-center reveal">
-                <p class="text-3xl font-extrabold text-white mb-2">Phew.</p>
-                <p class="text-brand font-medium tracking-wide">Not your conventional management consultancy.</p>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="border-t border-white/5 bg-dark-900 pt-16 pb-8 px-6 relative z-10">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-12">
-                <div class="text-2xl font-extrabold tracking-tight flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity cursor-pointer">
-                    <img src="https://raw.githubusercontent.com/karolina-afk/AO-brand-assets-/main/Axia_Origin_W_RGB_72dpii%20(4).png" alt="Axia Origin" class="h-6 md:h-8 object-contain opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
-                </div>
-                <div class="flex gap-8 text-sm font-medium text-slate-500">
-                    <a href="#" class="hover:text-brand transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-brand transition-colors">Terms of Service</a>
-                    <a href="#" class="hover:text-brand transition-colors">Client Portal</a>
-                </div>
-            </div>
-            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-600">
-                <p>&copy; 2026 Axia Origin. Confidential Proposal prepared for EQUI Consulting.</p>
-                <p>Designed for impact.</p>
-            </div>
-        </div>
-    </footer>
-
     <!-- UI Interactions Script -->
     <script>
-        // --- Preloader Logic ---
+        // --- Intro Sequence Preloader Logic ---
         window.addEventListener('load', () => {
-            const preloader = document.getElementById('preloader');
-            setTimeout(() => {
-                preloader.style.opacity = '0';
-                preloader.style.visibility = 'hidden';
-                setTimeout(() => preloader.remove(), 800);
-            }, 500); // Slight delay ensures fonts and initial canvases are totally ready
+            // Lock scroll while intro plays
+            document.body.style.overflow = 'hidden';
+
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    // Fade out intro sequence and restore scroll
+                    gsap.to("#intro-sequence", {
+                        opacity: 0,
+                        duration: 0.8,
+                        ease: "power2.inOut",
+                        delay: 0.5,
+                        onComplete: () => {
+                            const intro = document.getElementById('intro-sequence');
+                            if (intro) intro.remove();
+                            document.body.style.overflow = '';
+                            window.dispatchEvent(new Event('scroll')); // Trigger scroll reveals
+                        }
+                    });
+                }
+            });
+
+            const notEl = document.querySelector('.word-not');
+            const notMask = document.querySelector('.not-mask');
+
+            if (notEl && notMask) {
+                // Temporarily reveal to grab natural width
+                notMask.style.width = 'auto';
+                notEl.style.transform = 'none';
+                const targetNotWidth = notMask.getBoundingClientRect().width;
+
+                // Reset to starting values before animation
+                notMask.style.width = '0px';
+                notEl.style.transform = 'translateX(-100%)';
+
+                // 1. Fade in base text
+                tl.to(".word-your, .line-2", {
+                    opacity: 1,
+                    duration: 1,
+                    ease: "power2.out"
+                }, 0.5);
+
+                // 2. "Not" slides in and expands mask width
+                tl.to(notMask, {
+                    width: targetNotWidth,
+                    duration: 1.2,
+                    ease: "bounce.out"
+                }, 1.5);
+
+                tl.to(notEl, {
+                    x: 0,
+                    duration: 1.2,
+                    ease: "bounce.out"
+                }, 1.5);
+
+                // 3. "Phew." slides up
+                tl.to(".word-phew", {
+                    y: "0%",
+                    duration: 0.8,
+                    ease: "back.out(1.2)"
+                }, 2.8);
+
+                // 4. Logo slides in from right to left
+                tl.from(".axia-logo", {
+                    x: "100vw",
+                    opacity: 0,
+                    duration: 1.2,
+                    ease: "power3.out"
+                }, 4.1);
+            }
         });
 
         // --- Timeline Card Expansion Logic ---
         function toggleTimelineCard(element) {
+            const step = element.closest('.timeline-step');
             const details = element.querySelector('.card-details');
             const chevron = element.querySelector('.chevron-icon');
             const toggleText = element.querySelector('span:nth-of-type(1)'); 
             
-            if (details.classList.contains('open')) {
+            const isExpanded = element.classList.contains('expanded-card');
+            
+            // Auto-close any currently open cards for a clean UX
+            document.querySelectorAll('.glow-card.expanded-card').forEach(card => {
+                if (card !== element) {
+                    card.classList.remove('expanded-card');
+                    card.closest('.timeline-step').classList.remove('is-expanded');
+                    card.querySelector('.card-details').classList.remove('open');
+                    card.querySelector('.chevron-icon').classList.remove('open');
+                    const text = card.querySelector('span:nth-of-type(1)');
+                    if (text) text.innerText = "Read Full Context";
+                }
+            });
+
+            if (isExpanded) {
+                element.classList.remove('expanded-card');
+                step.classList.remove('is-expanded');
                 details.classList.remove('open');
                 chevron.classList.remove('open');
                 if(toggleText) toggleText.innerText = "Read Full Context";
             } else {
+                element.classList.add('expanded-card');
+                step.classList.add('is-expanded');
                 details.classList.add('open');
                 chevron.classList.add('open');
                 if(toggleText) toggleText.innerText = "Collapse";
